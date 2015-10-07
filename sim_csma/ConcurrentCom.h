@@ -15,10 +15,10 @@
 
 class ConcurrentCom {
     CsmaSimExpBackoff expBackOff;
-    CsmsSimVcs vcs;
+    CsmaSimVcs vcs;
     
 public:
-    <#member functions#>
+    
 };
 
 #endif /* defined(__sim_csma__ConcurrentCom__) */

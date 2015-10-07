@@ -27,6 +27,7 @@ using namespace std;
 #define CWo 8
 #define CWmax 1024
 #define SIM_TIME_SECS 10
+#define SLOTS_PER_FRAME 
 
 struct ScenarioMetrics {
     uint16_t lambda;
@@ -43,7 +44,6 @@ protected:
     Node B;
     Node C;
     Node D;
-    sem_t
     vector<uint16_t> m_vecLambda;
     ScenarioMetrics m_strMetrics;
     

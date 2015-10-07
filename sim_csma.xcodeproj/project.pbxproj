@@ -8,6 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		5238848F1BB509F3001AB8D9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5238848E1BB509F3001AB8D9 /* main.cpp */; };
+		523884971BB50AC5001AB8D9 /* ConcurrentCom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 523884951BB50AC5001AB8D9 /* ConcurrentCom.cpp */; };
+		5238849A1BB50B66001AB8D9 /* CsmaSim.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 523884981BB50B66001AB8D9 /* CsmaSim.cpp */; };
+		5238849D1BB513D7001AB8D9 /* CsmaSimExpBackoff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5238849B1BB513D7001AB8D9 /* CsmaSimExpBackoff.cpp */; };
+		523884A01BB514D2001AB8D9 /* CsmaSimVcs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5238849E1BB514D2001AB8D9 /* CsmaSimVcs.cpp */; };
+		523884A31BB51677001AB8D9 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 523884A11BB51677001AB8D9 /* Node.cpp */; };
+		523884A61BB517B8001AB8D9 /* Channel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 523884A41BB517B8001AB8D9 /* Channel.cpp */; };
+		5239D3DC1BC4C36A009A26E6 /* Simulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5239D3DA1BC4C36A009A26E6 /* Simulation.cpp */; };
+		5239D3DF1BC4C63C009A26E6 /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5239D3DD1BC4C63C009A26E6 /* Event.cpp */; };
+		5239D3E21BC4CD41009A26E6 /* SimQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5239D3E01BC4CD41009A26E6 /* SimQueue.cpp */; };
+		5239D3E51BC4EB1F009A26E6 /* CsmaEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5239D3E31BC4EB1F009A26E6 /* CsmaEvents.cpp */; };
+		5239D3E81BC4F24E009A26E6 /* SimRandomNumbers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5239D3E61BC4F24E009A26E6 /* SimRandomNumbers.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +36,28 @@
 /* Begin PBXFileReference section */
 		5238848B1BB509F3001AB8D9 /* sim_csma */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sim_csma; sourceTree = BUILT_PRODUCTS_DIR; };
 		5238848E1BB509F3001AB8D9 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		523884951BB50AC5001AB8D9 /* ConcurrentCom.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConcurrentCom.cpp; sourceTree = "<group>"; };
+		523884961BB50AC5001AB8D9 /* ConcurrentCom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConcurrentCom.h; sourceTree = "<group>"; };
+		523884981BB50B66001AB8D9 /* CsmaSim.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CsmaSim.cpp; sourceTree = "<group>"; };
+		523884991BB50B66001AB8D9 /* CsmaSim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CsmaSim.h; sourceTree = "<group>"; };
+		5238849B1BB513D7001AB8D9 /* CsmaSimExpBackoff.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CsmaSimExpBackoff.cpp; sourceTree = "<group>"; };
+		5238849C1BB513D7001AB8D9 /* CsmaSimExpBackoff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CsmaSimExpBackoff.h; sourceTree = "<group>"; };
+		5238849E1BB514D2001AB8D9 /* CsmaSimVcs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CsmaSimVcs.cpp; sourceTree = "<group>"; };
+		5238849F1BB514D2001AB8D9 /* CsmaSimVcs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CsmaSimVcs.h; sourceTree = "<group>"; };
+		523884A11BB51677001AB8D9 /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = "<group>"; };
+		523884A21BB51677001AB8D9 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
+		523884A41BB517B8001AB8D9 /* Channel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Channel.cpp; sourceTree = "<group>"; };
+		523884A51BB517B8001AB8D9 /* Channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Channel.h; sourceTree = "<group>"; };
+		5239D3DA1BC4C36A009A26E6 /* Simulation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Simulation.cpp; sourceTree = "<group>"; };
+		5239D3DB1BC4C36A009A26E6 /* Simulation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Simulation.h; sourceTree = "<group>"; };
+		5239D3DD1BC4C63C009A26E6 /* Event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Event.cpp; sourceTree = "<group>"; };
+		5239D3DE1BC4C63C009A26E6 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
+		5239D3E01BC4CD41009A26E6 /* SimQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimQueue.cpp; sourceTree = "<group>"; };
+		5239D3E11BC4CD41009A26E6 /* SimQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimQueue.h; sourceTree = "<group>"; };
+		5239D3E31BC4EB1F009A26E6 /* CsmaEvents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CsmaEvents.cpp; sourceTree = "<group>"; };
+		5239D3E41BC4EB1F009A26E6 /* CsmaEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CsmaEvents.h; sourceTree = "<group>"; };
+		5239D3E61BC4F24E009A26E6 /* SimRandomNumbers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimRandomNumbers.cpp; sourceTree = "<group>"; };
+		5239D3E71BC4F24E009A26E6 /* SimRandomNumbers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimRandomNumbers.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +91,28 @@
 			isa = PBXGroup;
 			children = (
 				5238848E1BB509F3001AB8D9 /* main.cpp */,
+				5239D3E61BC4F24E009A26E6 /* SimRandomNumbers.cpp */,
+				5239D3E71BC4F24E009A26E6 /* SimRandomNumbers.h */,
+				523884951BB50AC5001AB8D9 /* ConcurrentCom.cpp */,
+				523884961BB50AC5001AB8D9 /* ConcurrentCom.h */,
+				523884981BB50B66001AB8D9 /* CsmaSim.cpp */,
+				523884991BB50B66001AB8D9 /* CsmaSim.h */,
+				5238849B1BB513D7001AB8D9 /* CsmaSimExpBackoff.cpp */,
+				5238849C1BB513D7001AB8D9 /* CsmaSimExpBackoff.h */,
+				5238849E1BB514D2001AB8D9 /* CsmaSimVcs.cpp */,
+				5238849F1BB514D2001AB8D9 /* CsmaSimVcs.h */,
+				523884A11BB51677001AB8D9 /* Node.cpp */,
+				523884A21BB51677001AB8D9 /* Node.h */,
+				523884A41BB517B8001AB8D9 /* Channel.cpp */,
+				523884A51BB517B8001AB8D9 /* Channel.h */,
+				5239D3DA1BC4C36A009A26E6 /* Simulation.cpp */,
+				5239D3DB1BC4C36A009A26E6 /* Simulation.h */,
+				5239D3E31BC4EB1F009A26E6 /* CsmaEvents.cpp */,
+				5239D3E41BC4EB1F009A26E6 /* CsmaEvents.h */,
+				5239D3DD1BC4C63C009A26E6 /* Event.cpp */,
+				5239D3DE1BC4C63C009A26E6 /* Event.h */,
+				5239D3E01BC4CD41009A26E6 /* SimQueue.cpp */,
+				5239D3E11BC4CD41009A26E6 /* SimQueue.h */,
 			);
 			path = sim_csma;
 			sourceTree = "<group>";
@@ -117,7 +172,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				523884A01BB514D2001AB8D9 /* CsmaSimVcs.cpp in Sources */,
+				5239D3E21BC4CD41009A26E6 /* SimQueue.cpp in Sources */,
+				5239D3E51BC4EB1F009A26E6 /* CsmaEvents.cpp in Sources */,
+				5238849D1BB513D7001AB8D9 /* CsmaSimExpBackoff.cpp in Sources */,
+				523884971BB50AC5001AB8D9 /* ConcurrentCom.cpp in Sources */,
+				5239D3DF1BC4C63C009A26E6 /* Event.cpp in Sources */,
+				523884A31BB51677001AB8D9 /* Node.cpp in Sources */,
+				5239D3DC1BC4C36A009A26E6 /* Simulation.cpp in Sources */,
+				5238849A1BB50B66001AB8D9 /* CsmaSim.cpp in Sources */,
 				5238848F1BB509F3001AB8D9 /* main.cpp in Sources */,
+				523884A61BB517B8001AB8D9 /* Channel.cpp in Sources */,
+				5239D3E81BC4F24E009A26E6 /* SimRandomNumbers.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,6 +270,12 @@
 		523884931BB509F3001AB8D9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/usr/local/lib/boost_1_59_0,
+				);
+				"OTHER_LDFLAGS[arch=*]" = "-L/usr/local/lib/boost_1_59_0/stage/lib/ ";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -211,6 +283,11 @@
 		523884941BB509F3001AB8D9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"/usr/local/lib/boost_1_59_0/**",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -234,6 +311,7 @@
 				523884941BB509F3001AB8D9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -8,15 +8,18 @@
 
 #ifndef __sim_csma__Channel__
 #define __sim_csma__Channel__
-
+#include <stdint.h>
 #include <stdio.h>
+enum ChannelState {
+    BUSY,
+    IDLE,
+};
+
 
 class Channel {
-    <#instance variables#>
     
 public:
     bool isBusy;
-    bool
 };
 
 #endif /* defined(__sim_csma__Channel__) */

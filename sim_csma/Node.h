@@ -10,13 +10,26 @@
 #define __sim_csma__Node__
 
 #include <stdio.h>
+#include "Channel.h"
+
+enum NodeState {
+    SENDING,
+    WAITING,
+    
+};
+
 
 class Node {
     bool m_bTransmits;
+    Channel *channel;
+    uint32_t retransmitAttempt;
+    
     
 public:
-    Node(bool transmitter):m_bTransmits(transmitter){}
-    bool DidTransmit(Channel c);
+    Node(bool transmitter);
+    bool DidTransmit();
+    float GetNextTransmitTime();
+    uint32_t GetCw();
 };
 
 #endif /* defined(__sim_csma__Node__) */
