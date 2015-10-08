@@ -30,15 +30,20 @@ void Simulation::ScheduleEvent(Event *event){
     event_q.insert(event);
 }
 
+uint64_t Simulation::queuedEvents(){
+    return event_q.size();
+}
+
 void Simulation::Run(){
     
-    while( curTime >= stopTime && !event_q.empty() )
+    while( curTime < stopTime && !event_q.empty() )
     {
         vector<Event*> curEvents = event_q.getNext();
         if( curEvents.size() > 1 )
             cout << "Got two events with same time:" << (*(curEvents.begin()))->time << endl;
         
         for (vector<Event*>::iterator it = curEvents.begin(); it != curEvents.end(); ++it) {
+            curTime = (*it)->time;
             (*it)->execute();
         }
     }

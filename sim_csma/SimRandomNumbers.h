@@ -17,12 +17,7 @@
 namespace random_distro
 {
     
-    double exponential(uint32_t hertz)
-    {
-        double r = static_cast <double> (rand()) / static_cast <double> (RAND_MAX);
-        return -log(1.0f-r)/hertz;
-    }
-    
+    double exponential(uint32_t freqHz);
 }
 
 #endif /* defined(__sim_csma__SimRandomNumbers__) */

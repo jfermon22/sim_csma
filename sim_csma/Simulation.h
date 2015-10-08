@@ -27,11 +27,10 @@ public:
     void ScheduleEvent(Event *event);
     //void TerminateEvent(Event *event);
     
-    
-    
     void SetStartTime(sim_time newTime);
     void SetStopTime(sim_time newTime);
     sim_time GetTime();
+    uint64_t queuedEvents();
     
 };
 

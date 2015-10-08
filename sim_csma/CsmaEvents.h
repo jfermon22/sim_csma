@@ -16,7 +16,8 @@
 class Send : public Event {
     uint32_t nodeId;
 public:
-    Send(uint32_t Id,sim_time newTime = 0);
+    Send(uint32_t Id,sim_time newTime = 0.0f);
+    ~Send(){};
     void execute();
     
 };

@@ -9,13 +9,13 @@
 #include "CsmaEvents.h"
 
 
-Send::Send(uint32_t Id,sim_time newTime):Event(newTime,VERY_LOW),
-nodeId(Id)
+Send::Send(uint32_t Id,sim_time newTime):
+    Event(newTime,VERY_LOW),nodeId(Id)
 {
     
 }
 
 
 void Send::execute(){
-    std::cout << "Executing event at time: " << time << std::endl;
+    std::cout << "Executing " << *this << std::endl;
 }

@@ -13,7 +13,9 @@
 #include <iostream>
 #include "SimRandomNumbers.h"
 
-typedef double sim_time;
+using namespace std;
+
+typedef float sim_time;
 
 enum Priority {
     VERY_HIGH,
@@ -30,22 +32,41 @@ protected :
 public :
     virtual ~Event();                   // destructor.
     
-    virtual int operator()() = 0;       // empty
+   // virtual int operator()() = 0;       // empty
     virtual void execute() = 0;
     friend bool operator<(const Event &a,const Event &b);
-    //virtual int verify();               // returns OK
+    friend bool operator>(const Event &a,const Event &b);
+    friend ostream& operator<<(std::ostream& os, const Event& obj);
     
+    //virtual int verify();               // returns OK
     //int report(histogram* h,double interval = 0);  // create report
     
     //void stamp();                       // add time stamp
     //double timespent();                 // time since the stamp
-    
     bool isActive;
     bool isPending;
     bool isClosed;
     bool isQueued;
     Priority priority;
     sim_time time;
+    
 };
+
+template<class T>
+struct ptr_less : public binary_function<T, T, bool>
+{
+    bool operator()(const T& left, const T& right) const{
+        return ((*left) <( *right));
+    }
+};
+
+template<class T>
+struct ptr_greater : public binary_function<T, T, bool>
+{
+    bool operator()(const T& left, const T& right) const{
+        return ((*left) > ( *right));
+    }
+};
+
 
 #endif /* defined(__sim_csma__Event__) */

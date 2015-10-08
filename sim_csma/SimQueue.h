@@ -17,12 +17,13 @@
 using namespace std;
 
 class SimQueue {
-    std::priority_queue<Event*> myQueue;
+    std::priority_queue<Event*,vector<Event*>,ptr_greater<Event*>> myQueue;
 public:
     
     void insert(Event *event);
     vector<Event*> getNext();
     bool empty();
+    uint64_t size();
 };
 
 #endif /* defined(__sim_csma__SimQueue__) */
