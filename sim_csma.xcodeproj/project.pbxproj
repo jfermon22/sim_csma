@@ -13,6 +13,8 @@
 		5239D3E21BC4CD41009A26E6 /* SimQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5239D3E01BC4CD41009A26E6 /* SimQueue.cpp */; };
 		5239D3E51BC4EB1F009A26E6 /* CsmaEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5239D3E31BC4EB1F009A26E6 /* CsmaEvents.cpp */; };
 		5239D3E81BC4F24E009A26E6 /* SimRandomNumbers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5239D3E61BC4F24E009A26E6 /* SimRandomNumbers.cpp */; };
+		52CC37C51BC6405600D5BB60 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52CC37C31BC6405600D5BB60 /* Node.cpp */; };
+		52CC37C81BC640DC00D5BB60 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52CC37C61BC640DC00D5BB60 /* Entity.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -40,6 +42,10 @@
 		5239D3E41BC4EB1F009A26E6 /* CsmaEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CsmaEvents.h; sourceTree = "<group>"; };
 		5239D3E61BC4F24E009A26E6 /* SimRandomNumbers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimRandomNumbers.cpp; sourceTree = "<group>"; };
 		5239D3E71BC4F24E009A26E6 /* SimRandomNumbers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimRandomNumbers.h; sourceTree = "<group>"; };
+		52CC37C31BC6405600D5BB60 /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = "<group>"; };
+		52CC37C41BC6405600D5BB60 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
+		52CC37C61BC640DC00D5BB60 /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
+		52CC37C71BC640DC00D5BB60 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +79,10 @@
 			isa = PBXGroup;
 			children = (
 				5238848E1BB509F3001AB8D9 /* main.cpp */,
+				52CC37C31BC6405600D5BB60 /* Node.cpp */,
+				52CC37C41BC6405600D5BB60 /* Node.h */,
+				52CC37C61BC640DC00D5BB60 /* Entity.cpp */,
+				52CC37C71BC640DC00D5BB60 /* Entity.h */,
 				5239D3E61BC4F24E009A26E6 /* SimRandomNumbers.cpp */,
 				5239D3E71BC4F24E009A26E6 /* SimRandomNumbers.h */,
 				5239D3DA1BC4C36A009A26E6 /* Simulation.cpp */,
@@ -142,7 +152,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52CC37C81BC640DC00D5BB60 /* Entity.cpp in Sources */,
 				5239D3E21BC4CD41009A26E6 /* SimQueue.cpp in Sources */,
+				52CC37C51BC6405600D5BB60 /* Node.cpp in Sources */,
 				5239D3E51BC4EB1F009A26E6 /* CsmaEvents.cpp in Sources */,
 				5239D3DF1BC4C63C009A26E6 /* Event.cpp in Sources */,
 				5239D3DC1BC4C36A009A26E6 /* Simulation.cpp in Sources */,

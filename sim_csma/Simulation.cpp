@@ -40,7 +40,7 @@ void Simulation::Run(){
     {
         vector<Event*> curEvents = event_q.getNext();
         if( curEvents.size() > 1 )
-            cout << "Got two events with same time:" << (*(curEvents.begin()))->time << endl;
+            cout << "Got "<< curEvents.size() <<" events with same time:" << (*(curEvents.begin()))->time << endl;
         
         for (vector<Event*>::iterator it = curEvents.begin(); it != curEvents.end(); ++it) {
             curTime = (*it)->time;
