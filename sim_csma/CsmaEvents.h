@@ -22,8 +22,7 @@ public:
     Send(Node *sNode,sim_time newTime = 0.0f,sim_time sendDuration = 0.00001f);
     ~Send(){};
     void execute();
-	void executeDuplicate();
-    
+	void executeDuplicate();    
 };
 
 class EndSend : public Event 

@@ -15,6 +15,7 @@
 		5239D3E81BC4F24E009A26E6 /* SimRandomNumbers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5239D3E61BC4F24E009A26E6 /* SimRandomNumbers.cpp */; };
 		52CC37C51BC6405600D5BB60 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52CC37C31BC6405600D5BB60 /* Node.cpp */; };
 		52CC37C81BC640DC00D5BB60 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52CC37C61BC640DC00D5BB60 /* Entity.cpp */; };
+		52CC37CB1BC7877600D5BB60 /* Channel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52CC37C91BC7877600D5BB60 /* Channel.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -46,6 +47,8 @@
 		52CC37C41BC6405600D5BB60 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
 		52CC37C61BC640DC00D5BB60 /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
 		52CC37C71BC640DC00D5BB60 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
+		52CC37C91BC7877600D5BB60 /* Channel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Channel.cpp; sourceTree = "<group>"; };
+		52CC37CA1BC7877600D5BB60 /* Channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Channel.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +84,8 @@
 				5238848E1BB509F3001AB8D9 /* main.cpp */,
 				52CC37C31BC6405600D5BB60 /* Node.cpp */,
 				52CC37C41BC6405600D5BB60 /* Node.h */,
+				52CC37C91BC7877600D5BB60 /* Channel.cpp */,
+				52CC37CA1BC7877600D5BB60 /* Channel.h */,
 				52CC37C61BC640DC00D5BB60 /* Entity.cpp */,
 				52CC37C71BC640DC00D5BB60 /* Entity.h */,
 				5239D3E61BC4F24E009A26E6 /* SimRandomNumbers.cpp */,
@@ -157,6 +162,7 @@
 				52CC37C51BC6405600D5BB60 /* Node.cpp in Sources */,
 				5239D3E51BC4EB1F009A26E6 /* CsmaEvents.cpp in Sources */,
 				5239D3DF1BC4C63C009A26E6 /* Event.cpp in Sources */,
+				52CC37CB1BC7877600D5BB60 /* Channel.cpp in Sources */,
 				5239D3DC1BC4C36A009A26E6 /* Simulation.cpp in Sources */,
 				5238848F1BB509F3001AB8D9 /* main.cpp in Sources */,
 				5239D3E81BC4F24E009A26E6 /* SimRandomNumbers.cpp in Sources */,

@@ -14,6 +14,7 @@
 #include "SimQueue.h"
 
 class Simulation {
+protected:
     sim_time startTime;
     sim_time stopTime;
     sim_time curTime;
@@ -23,14 +24,17 @@ class Simulation {
     
 public:
     Simulation(sim_time stop, sim_time start = 0);
+    ~Simulation();
     void Run();
     void Stop();
+    void PrintData();
     void ScheduleEvent(Event *event);
     //void TerminateEvent(Event *event);
     
     void SetStartTime(sim_time newTime);
     void SetStopTime(sim_time newTime);
     sim_time GetTime();
+    sim_time GetNextEventTime();
     uint64_t queuedEvents();
     
 };

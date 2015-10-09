@@ -10,21 +10,29 @@
 
 
 Send::Send(Node *sNode,sim_time newTime,sim_time sendDuration):
-    Event(newTime,VERY_LOW),duration(sendDuration)
+    Event(newTime,VERY_LOW)
 {
     sendingNode = sNode;
 }
 
 
 void Send::execute(){
-	sendingNode->sendSuccess(duration);
-    std::cout << "Executing Send: " << *this << " " << sendingNode->id() << "->" <<endl;
+    if (sendingNode->channel()->isFree){
+        sendingNode->sendSuccess();
+        sendingNode->channel()->isFree = false;
+        sendingNode->channel()->owner = sendingNode->id();
+        //std::cout << time << "," << sendingNode->id() << ",Send" <<  endl;
+    } else {
+        sendingNode->handleBusy(this);
+       // std::cout << time << "," << sendingNode->id() <<  ",RescheduleSend,owner:"<<sendingNode->channel()->owner << endl;
+    }
+    
+
+    
 }
 
 void Send::executeDuplicate(){
-	std::cout << "Executing Send Duplicates: " << *this << " " << sendingNode->id() << "->" <<endl;
-	sendingNode->sendFailure();
-    
+	sendingNode->handleCollision();
 }
 
 EndSend::EndSend(Node *sNode,sim_time newTime):
@@ -36,6 +44,7 @@ EndSend::EndSend(Node *sNode,sim_time newTime):
 
 void EndSend::execute(){
 	sendingNode->endTransmit();
-    std::cout << "Executing End: " << *this << " " << sendingNode->id() << "->" <<endl;
+    sendingNode->channel()->isFree = true;
+    //std::cout << time << "," << sendingNode->id() << ",End" <<  endl;
 }
 

@@ -21,7 +21,6 @@ uint64_t SimQueue::size()
 vector<Event*> SimQueue::getNext()
 {
     vector<Event*> curEventsVec;
-    //cout << "myQueue.size: " <<myQueue.size() << endl;
     do
     {
         curEventsVec.push_back(myQueue.top());
@@ -31,10 +30,20 @@ vector<Event*> SimQueue::getNext()
              (*(curEventsVec.begin()))->time == (myQueue.top())->time &&
              (*(curEventsVec.begin()))->priority == (myQueue.top())->priority );
     
-    //cout << "currEvents.size: " <<curEventsVec.size() << endl;
     return curEventsVec;
+}
+
+Event* SimQueue::top(){
+    return myQueue.top();
 }
 
 bool SimQueue::empty(){
     return myQueue.empty();
+}
+
+
+void SimQueue::clear(){
+    while ( ! myQueue.empty())
+        myQueue.pop();
+
 }

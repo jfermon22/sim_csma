@@ -10,39 +10,46 @@
 #include "SimRandomNumbers.h"
 #include "CsmaEvents.h"
 
-const float SLOT_DUR = .00002;
-
-Node::Node(uint32_t newID,Simulation *sim,uint32_t msgFreq):Entity(newID),
-	consecutiveCollissions(0),sendFreq(msgFreq)
+Node::Node(uint32_t newID,Simulation *sim,Channel *channel, uint32_t msgFreq,sim_time sendDur,sim_time slotDur ):Entity(newID),
+	consecutiveCollissions(0),sendFreq(msgFreq),sendDuration(sendDur),slotDuration(slotDur)
 {
     m_sim = sim;
+    m_channel = channel;
 }
 uint32_t Node::id(){
 	return identity;
 }
 
-void Node::sendSuccess(sim_time duration){
-	//lastSendSuccess = true;
+void Node::sendSuccess(){
 	consecutiveCollissions = 0;
-	scheduleEndSend(duration);
+	scheduleEndSend(sendDuration);
 }
 
-void Node::sendFailure(){
+void Node::handleCollision(){
 	if (consecutiveCollissions < 10)
         consecutiveCollissions++;
 	
 	sim_time nextSend = getBackoff();
-	cout << "retry " << consecutiveCollissions << ": " << nextSend << endl;
+	//cout << "retry " << consecutiveCollissions << ": " << nextSend << endl;
 	
     scheduleSend(nextSend);
 }
+
+void Node::handleBusy(Event *event){
+    sim_time channelFreeTime = m_sim->GetNextEventTime();
+    sim_time rescheduleTime = channelFreeTime + slotDuration;
+    sim_time nextSendTime = rescheduleTime - m_sim->GetTime();
+    event->SetTime(nextSendTime);
+    m_sim->ScheduleEvent(event);
+}
+
 
 void Node::endTransmit(){
 	scheduleSend(random_distro::exponential(sendFreq,random_distro::TEN_USECS));
 }
 
 void Node::scheduleSend(sim_time nextSendTime){
-    m_sim->ScheduleEvent(new Send(this,nextSendTime));
+    m_sim->ScheduleEvent(new Send(this,nextSendTime,sendDuration));
 }
 
 void Node::scheduleEndSend(sim_time endTime){
@@ -51,6 +58,11 @@ void Node::scheduleEndSend(sim_time endTime){
 
 sim_time Node::getBackoff(){
 	uint randSlot = random_distro::rand_int_max((uint16_t)pow(2, consecutiveCollissions));
-	cout << "getting rand between [0," << (uint16_t)pow(2, consecutiveCollissions) << "] - " << randSlot << endl;
-	return SLOT_DUR * (float)randSlot;
+	//cout << "getting rand between [0," << (uint16_t)pow(2, consecutiveCollissions) << "] - " << randSlot << endl;
+	return slotDuration * (float)randSlot;
+}
+
+
+Channel* Node::channel(){
+    return m_channel;
 }

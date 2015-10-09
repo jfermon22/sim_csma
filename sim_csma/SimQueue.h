@@ -23,7 +23,9 @@ public:
     void insert(Event *event);
     vector<Event*> getNext();
     bool empty();
+    void clear();
     uint64_t size();
+    Event* top();
 };
 
 #endif /* defined(__sim_csma__SimQueue__) */

@@ -31,7 +31,8 @@ protected :
     
 public :
     virtual ~Event();                   // destructor.
-
+    
+    virtual void SetTime(sim_time newTime);
     virtual void execute() = 0;
 	virtual void executeDuplicate(){execute();}       //special execute to call when events scheduled at same time and priority.
 	                                                  //if not overridden calls execute

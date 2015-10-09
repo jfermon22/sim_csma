@@ -17,6 +17,10 @@ Event::~Event()
 {
 }
 
+void Event::SetTime(sim_time newTime){
+    time = newTime;
+}
+
 bool operator<(const Event &a, const Event &b) {
     if (a.time == b.time)
         return( a.priority < b.priority );
@@ -33,6 +37,6 @@ bool operator>(const Event &a, const Event &b) {
 
 ostream& operator<<(std::ostream& os, const Event& obj)
 {
-    os << "time: " << obj.time << " priority: " << obj.priority;
+    os << obj.time << "," << obj.priority;
     return os;
 }

@@ -13,6 +13,11 @@ Simulation::Simulation( sim_time stop, sim_time start):
 {
 }
 
+Simulation::~Simulation(){
+    event_q.clear();
+}
+
+
 void Simulation::SetStartTime(sim_time newTime){
     startTime = newTime;
 }
@@ -29,6 +34,9 @@ void Simulation::ScheduleEvent(Event *event){
     event->time += curTime;
     event_q.insert(event);
 }
+sim_time Simulation::GetNextEventTime(){
+    return (event_q.top())->time;
+}
 
 uint64_t Simulation::queuedEvents(){
     return event_q.size();
@@ -44,6 +52,7 @@ void Simulation::Run(){
         if( curEvents.size() > 1 ) {
 			cout << "-------------------------------------------" << endl;
             cout << "Got "<< curEvents.size() <<" events with same time:" << (*(curEvents.begin()))->time << endl;
+            cout << "-------------------------------------------" << endl;
 			dupEvents++;
 			for (; it != curEvents.end(); ++it) {
 				(*it)->executeDuplicate();
@@ -55,8 +64,16 @@ void Simulation::Run(){
 			nEvents++;
 		}
 	}
-	cout << "Events left in queue: " << event_q.size()<< endl;
-	cout << "Finished sim at time: " << curTime << endl;
-	cout << "Events Executed: " << nEvents << endl;
-	cout << "Duplicate Events: " << dupEvents << endl;
+	
+}
+
+void Simulation::PrintData(){
+    cout << endl;
+    cout << "-------------------------------------------" << endl;
+    cout << "Final time:    " << curTime << endl;
+    cout << "Event Data: " << endl;
+    cout << " - In Queue:   " << event_q.size()<< endl;
+    cout << " - Executed:   " << nEvents << endl;
+    cout << " - Duplicates: " << dupEvents << endl;
+    
 }

@@ -28,7 +28,7 @@ int random_distro::seed(){
 	}
 	return 0;
 #else
-    return std::chrono::system_clock::now().time_since_epoch().count();
+    return (int)std::chrono::system_clock::now().time_since_epoch().count();
 #endif
 	
 }
