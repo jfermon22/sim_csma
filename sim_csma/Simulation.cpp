@@ -9,7 +9,7 @@
 #include "Simulation.h"
 
 Simulation::Simulation( sim_time stop, sim_time start):
-startTime(start),stopTime(stop)
+	startTime(start),stopTime(stop),nEvents(0),dupEvents(0)
 {
 }
 
@@ -39,13 +39,24 @@ void Simulation::Run(){
     while( curTime < stopTime && !event_q.empty() )
     {
         vector<Event*> curEvents = event_q.getNext();
-        if( curEvents.size() > 1 )
+		vector<Event*>::iterator it = curEvents.begin();
+		curTime = (*it)->time;
+        if( curEvents.size() > 1 ) {
+			cout << "-------------------------------------------" << endl;
             cout << "Got "<< curEvents.size() <<" events with same time:" << (*(curEvents.begin()))->time << endl;
-        
-        for (vector<Event*>::iterator it = curEvents.begin(); it != curEvents.end(); ++it) {
-            curTime = (*it)->time;
-            (*it)->execute();
-        }
-    }
-    cout << "Finished sim at time: " << curTime << endl;
+			dupEvents++;
+			for (; it != curEvents.end(); ++it) {
+				(*it)->executeDuplicate();
+				nEvents++;
+			}
+		}
+		else {
+			(*it)->execute();
+			nEvents++;
+		}
+	}
+	cout << "Events left in queue: " << event_q.size()<< endl;
+	cout << "Finished sim at time: " << curTime << endl;
+	cout << "Events Executed: " << nEvents << endl;
+	cout << "Duplicate Events: " << dupEvents << endl;
 }

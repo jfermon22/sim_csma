@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <math.h>
-#include <random>
+
 
 namespace random_distro
 {
@@ -28,6 +28,7 @@ namespace random_distro
     
     float exponential(uint32_t freqHz,precision precisionUs = USECS);
     int  rand_int_max(uint32_t maximum);
+	int  seed();
 }
 
 #endif /* defined(__sim_csma__SimRandomNumbers__) */

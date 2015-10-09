@@ -31,9 +31,10 @@ protected :
     
 public :
     virtual ~Event();                   // destructor.
-    
-   // virtual int operator()() = 0;       // empty
+
     virtual void execute() = 0;
+	virtual void executeDuplicate(){execute();}       //special execute to call when events scheduled at same time and priority.
+	                                                  //if not overridden calls execute
     friend bool operator<(const Event &a,const Event &b);
     friend bool operator>(const Event &a,const Event &b);
     friend ostream& operator<<(std::ostream& os, const Event& obj);

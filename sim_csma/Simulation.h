@@ -18,7 +18,8 @@ class Simulation {
     sim_time stopTime;
     sim_time curTime;
     SimQueue event_q;
-    
+    uint64_t nEvents;
+	uint32_t dupEvents;
     
 public:
     Simulation(sim_time stop, sim_time start = 0);

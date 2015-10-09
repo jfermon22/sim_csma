@@ -17,7 +17,7 @@
 using namespace std;
 
 class SimQueue {
-    std::priority_queue<Event*,vector<Event*>,ptr_greater<Event*>> myQueue;
+    priority_queue< Event*, vector<Event*>, ptr_greater<Event*> > myQueue;
 public:
     
     void insert(Event *event);

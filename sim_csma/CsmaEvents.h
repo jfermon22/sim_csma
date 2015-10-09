@@ -11,14 +11,29 @@
 
 #include <stdio.h>
 #include "Event.h"
+#include "Node.h"
 
 
-class Send : public Event {
-    uint32_t nodeId;
+class Send : public Event 
+{
+    Node *sendingNode;
+	sim_time duration;
 public:
-    Send(uint32_t Id,sim_time newTime = 0.0f);
+    Send(Node *sNode,sim_time newTime = 0.0f,sim_time sendDuration = 0.00001f);
     ~Send(){};
     void execute();
+	void executeDuplicate();
+    
+};
+
+class EndSend : public Event 
+{
+    Node *sendingNode;
+public:
+    EndSend(Node *sNode,sim_time newTime = 0.0f);
+    ~EndSend(){};
+    void execute();
+	//void executeDuplicate();
     
 };
 

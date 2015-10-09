@@ -9,13 +9,33 @@
 #include "CsmaEvents.h"
 
 
-Send::Send(uint32_t Id,sim_time newTime):
-    Event(newTime,VERY_LOW),nodeId(Id)
+Send::Send(Node *sNode,sim_time newTime,sim_time sendDuration):
+    Event(newTime,VERY_LOW),duration(sendDuration)
 {
-    
+    sendingNode = sNode;
 }
 
 
 void Send::execute(){
-    std::cout << "Executing " << *this << std::endl;
+	sendingNode->sendSuccess(duration);
+    std::cout << "Executing Send: " << *this << " " << sendingNode->id() << "->" <<endl;
 }
+
+void Send::executeDuplicate(){
+	std::cout << "Executing Send Duplicates: " << *this << " " << sendingNode->id() << "->" <<endl;
+	sendingNode->sendFailure();
+    
+}
+
+EndSend::EndSend(Node *sNode,sim_time newTime):
+    Event(newTime,VERY_LOW)
+{
+    sendingNode = sNode;
+}
+
+
+void EndSend::execute(){
+	sendingNode->endTransmit();
+    std::cout << "Executing End: " << *this << " " << sendingNode->id() << "->" <<endl;
+}
+

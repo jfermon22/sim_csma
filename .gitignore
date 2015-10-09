@@ -1,2 +1,3 @@
-sim_csma.xcodeproj/xcuserdata/
-bak/
+sim_csma.xcodeproj/
+.obj/
+sim_csma

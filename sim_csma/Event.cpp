@@ -33,6 +33,6 @@ bool operator>(const Event &a, const Event &b) {
 
 ostream& operator<<(std::ostream& os, const Event& obj)
 {
-    os << "time: " << obj.time << " priority: " << obj.priority << endl;
+    os << "time: " << obj.time << " priority: " << obj.priority;
     return os;
 }

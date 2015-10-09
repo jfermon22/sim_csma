@@ -8,27 +8,49 @@
 
 #include "Node.h"
 #include "SimRandomNumbers.h"
+#include "CsmaEvents.h"
 
 const float SLOT_DUR = .00002;
 
-Node::Node(uint32_t newID,Simulation *sim):Entity(newID),
- consecutiveCollissions(0)
+Node::Node(uint32_t newID,Simulation *sim,uint32_t msgFreq):Entity(newID),
+	consecutiveCollissions(0),sendFreq(msgFreq)
 {
     m_sim = sim;
 }
-
-void Node::collisionOccured(){
-    if (consecutiveCollissions < 10) {
-        consecutiveCollissions++;
-    }
-    scheduleSend();
+uint32_t Node::id(){
+	return identity;
 }
 
-void Node::scheduleSend(){
-    if (consecutiveCollissions) {
-        uint randSlot = random_distro::rand_int_max(pow(2, consecutiveCollissions));
-        sim_time nextSend = SLOT_DUR *randSlot;
-        scheduleSend();
-    }
-    
+void Node::sendSuccess(sim_time duration){
+	//lastSendSuccess = true;
+	consecutiveCollissions = 0;
+	scheduleEndSend(duration);
+}
+
+void Node::sendFailure(){
+	if (consecutiveCollissions < 10)
+        consecutiveCollissions++;
+	
+	sim_time nextSend = getBackoff();
+	cout << "retry " << consecutiveCollissions << ": " << nextSend << endl;
+	
+    scheduleSend(nextSend);
+}
+
+void Node::endTransmit(){
+	scheduleSend(random_distro::exponential(sendFreq,random_distro::TEN_USECS));
+}
+
+void Node::scheduleSend(sim_time nextSendTime){
+    m_sim->ScheduleEvent(new Send(this,nextSendTime));
+}
+
+void Node::scheduleEndSend(sim_time endTime){
+    m_sim->ScheduleEvent(new EndSend(this,endTime));
+}
+
+sim_time Node::getBackoff(){
+	uint randSlot = random_distro::rand_int_max((uint16_t)pow(2, consecutiveCollissions));
+	cout << "getting rand between [0," << (uint16_t)pow(2, consecutiveCollissions) << "] - " << randSlot << endl;
+	return SLOT_DUR * (float)randSlot;
 }
