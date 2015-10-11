@@ -33,7 +33,7 @@ void Node::handleCollision(){
     consecutiveCollissions++;
     totalCollisions++;
 	sim_time nextSend = getBackoff(consecutiveCollissions + 2);
-	//cout << "retry " << consecutiveCollissions << ": " << nextSend << endl;
+	//cout << m_sim->GetTime() << "," << identity <<",Collision, " << totalCollisions << endl;
 	
     scheduleSend(nextSend);
 }
@@ -99,7 +99,7 @@ sim_time Node::getBackoff(uint32_t nCollisions)
         nBackOffSlots = CWmax;
     
 	uint randSlot = random_distro::rand_int_max(nBackOffSlots);
-	cout << identity <<" Backoff [0," << nBackOffSlots << "] - " << randSlot << endl;
+	//cout << identity <<" Backoff [0," << nBackOffSlots << "] - " << randSlot << endl;
     
 	return slotDuration * (float)randSlot;
 }

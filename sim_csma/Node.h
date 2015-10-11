@@ -46,8 +46,8 @@ public:
     void scheduleDifs(Event *event);
     sim_time getBackoff(uint32_t nCollisions = 1);
     sim_time getSimTime();
-    uint32_t SuccessfulSends(){return successfulSends;}
-    uint32_t TotalCollisions(){return totalCollisions;}
+    uint32_t SuccessfulSends() const {return successfulSends;}
+    uint32_t TotalCollisions() const {return totalCollisions;}
     Channel* channel();
 };
 

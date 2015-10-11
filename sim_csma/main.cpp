@@ -10,7 +10,7 @@
 
 using namespace std;
 
-const uint msgFreq = 100;
+//const uint msgFreq = 100;
 const sim_time simDuration = 10;
 const sim_time SEND_DUR = 0.002;
 const sim_time SLOT_DUR = 0.00001;

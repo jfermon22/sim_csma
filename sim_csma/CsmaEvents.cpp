@@ -40,7 +40,7 @@ Event(newTime,VERY_LOW),difs(newDifs),slotDuration(slotDur),isRetry(isretry)
 
 void PacketReady::execute(){
         sendingNode->scheduleDifs(new DIFS(sendingNode,0,difs,slotDuration,false));
-        std::cout << time << "," << sendingNode->id() << ",PacketReady" <<  endl;
+       // std::cout << time << "," << sendingNode->id() << ",PacketReady" <<  endl;
 }
 
 /*void PacketReady::scheduleSend(sim_time sendTime)
@@ -72,10 +72,10 @@ void Send::execute()
         sendingNode->sendSuccess();
         sendingNode->channel()->isIdle = false;
         sendingNode->channel()->owner = sendingNode->id();
-        std::cout << time << "," << sendingNode->id() << ",Send" <<  endl;
+        //std::cout << time << "," << sendingNode->id() << ",Send" <<  endl;
     } else {
         sendingNode->handleBusy(this);
-        std::cout << time << "," << sendingNode->id() <<  ",AbortSend_ChanBusy"<< endl;
+       // std::cout << time << "," << sendingNode->id() <<  ",AbortSend_ChanBusy"<< endl;
     }
 }
 
@@ -93,6 +93,6 @@ EndSend::EndSend(Node *sNode,sim_time newTime):
 void EndSend::execute(){
 	sendingNode->endTransmit();
     sendingNode->channel()->isIdle = true;
-    std::cout << time << "," << sendingNode->id() << ",End" <<  endl;
+    //std::cout << time << "," << sendingNode->id() << ",End" <<  endl;
 }
 

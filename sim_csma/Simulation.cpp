@@ -42,40 +42,40 @@ uint64_t Simulation::queuedEvents(){
     return event_q.size();
 }
 
-void Simulation::Run(){
-    
+void Simulation::Run()
+{
     while( curTime < stopTime && !event_q.empty() )
     {
         vector<Event*> curEvents = event_q.getNext();
         vector<Event*>::iterator it = curEvents.begin();
         curTime = (*it)->time;
-        if( curEvents.size() > 1 ) {
+        uint sendEvents(0);
+        if( curEvents.size() > 1 )
+        {
             //cout << "-------------------------------------------" << endl;
             //cout << "Got "<< curEvents.size() <<" events with same time:" << (*(curEvents.begin()))->time << endl;
             //cout << "-------------------------------------------" << endl;
-            uint sendEvents(0);
-            for (vector<Event*>::iterator it = curEvents.begin(); it != curEvents.end(); ++it){
+            
+            for (it = curEvents.begin(); it != curEvents.end(); ++it)
+            {
                 if ((*it)->isSendAttempt)
                     sendEvents++;
             }
-            
-            if ( sendEvents > 1) {
-                std::cout << (*it)->time << ",Collision" <<  endl;
-                collisions++;
-            }
-            
-            for ( vector<Event*>::iterator it = curEvents.begin(); it != curEvents.end(); ++it) {
-                (*it)->executeDuplicate();
-                nEvents++;
-            }
-            
         }
-        else {
-            (*it)->execute();
+        
+        if ( sendEvents > 1){
+            std::cout << curTime << ",Collision" <<  endl;
+            collisions++;
+        }
+        for (it = curEvents.begin(); it != curEvents.end(); ++it)
+        {
+            if ( sendEvents > 1)
+                (*it)->executeDuplicate();
+            else
+                (*it)->execute();
             nEvents++;
         }
     }
-    
 }
 
 void Simulation::PrintData(){
