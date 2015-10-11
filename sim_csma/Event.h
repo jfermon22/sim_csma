@@ -27,7 +27,7 @@ enum Priority {
 class Event
 {
 protected :
-    Event(sim_time newTime = 0, Priority qpri=VERY_LOW);  // queuing pri
+    Event(sim_time newTime = 0, Priority qpri=VERY_LOW,bool attemptedSend = false);  // queuing pri
     
 public :
     virtual ~Event();                   // destructor.
@@ -49,6 +49,7 @@ public :
     bool isPending;
     bool isClosed;
     bool isQueued;
+    bool isSendAttempt;
     Priority priority;
     sim_time time;
     

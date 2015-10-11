@@ -13,9 +13,9 @@
 #include <stdint.h>
 
 struct Channel {
-    bool isFree;
+    bool isIdle;
     uint16_t owner;
-    Channel():isFree(true){}
+    Channel():isIdle(true){}
 };
 
 #endif /* defined(__sim_csma__Channel__) */

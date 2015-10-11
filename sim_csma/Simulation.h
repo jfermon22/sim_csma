@@ -20,7 +20,7 @@ protected:
     sim_time curTime;
     SimQueue event_q;
     uint64_t nEvents;
-	uint32_t dupEvents;
+	uint32_t collisions;
     
 public:
     Simulation(sim_time stop, sim_time start = 0);

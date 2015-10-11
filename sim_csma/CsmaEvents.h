@@ -14,15 +14,45 @@
 #include "Node.h"
 
 
+class DIFS : public Event
+{
+    Node *sendingNode;
+    sim_time timeLeft;
+    sim_time slotDuration;
+    bool m_shouldPause;
+    void scheduleBackoff();
+public:
+    DIFS(Node *sNode,sim_time execTime,sim_time duration,sim_time slotDur,bool shouldPause);
+    ~DIFS(){};
+    void execute();
+    bool isComplete();
+};
+
+class PacketReady : public Event
+{
+    Node *sendingNode;
+    sim_time difs;
+    sim_time slotDuration;
+    bool isRetry;
+    void scheduleSend(sim_time sendTime);
+    void scheduleBackoff();
+public:
+    PacketReady(Node *sNode,sim_time execTime,sim_time difsTime, sim_time slotDur, bool isretry = false);
+    ~PacketReady(){};
+    void execute();
+};
+
+
 class Send : public Event 
 {
     Node *sendingNode;
 	sim_time duration;
 public:
-    Send(Node *sNode,sim_time newTime = 0.0f,sim_time sendDuration = 0.00001f);
+    Send(Node *sNode, sim_time newTime = 0.0f, sim_time sendDuration = 0.00001f);
     ~Send(){};
     void execute();
-	void executeDuplicate();    
+    void executeDuplicate();
+    
 };
 
 class EndSend : public Event 
