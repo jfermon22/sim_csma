@@ -13,7 +13,7 @@ using namespace std;
 //const uint msgFreq = 100;
 const sim_time simDuration = 10;
 const sim_time PACKET_SEND_DUR = 0.002;
-const sim_time ACK_RTS_CTS_SND_SUR=0.00004;
+const sim_time ACK_RTS_CTS_SND_DUR=0.00004;
 const sim_time SLOT_DUR = 0.00001;
 const sim_time DIFS = 0.00004;
 const sim_time SIFS = 0.00004;
@@ -31,6 +31,12 @@ int main(int argc, const char * argv[]) {
     msgFreqVec.push_back(500);
     
     uint jjj(0);
+    cout << "------------------------------------------------------------" << endl;
+    cout << " KEY"<< endl;
+    cout << "Sim Num,Node,Attribute,Value"<< endl;
+    cout << "Node: 0 = A, 1 = C, 2 = Total"<< endl;
+    cout << "------------------------------------------------------------" << endl;
+
     for (uint nodeAFreqScale = 1; nodeAFreqScale <= 2; nodeAFreqScale++)
     {
         for (vector<uint32_t>::iterator it = msgFreqVec.begin();
@@ -49,10 +55,10 @@ int main(int argc, const char * argv[]) {
             uint32_t nodeCFreq = (*it);
             
             //init nodes
-            RxNode *nodeB = new RxNode(2,sim,channel,ACK_RTS_CTS_SND_SUR,SLOT_DUR);
-            RxNode *nodeD = new RxNode(4,sim,channel,ACK_RTS_CTS_SND_SUR,SLOT_DUR);
-            TxNode *nodeA = new TxNode(0,sim,channel,nodeB,nodeAFreq,DIFS,PACKET_SEND_DUR,SLOT_DUR);
-            TxNode *nodeC = new TxNode(1,sim,channel,nodeD,nodeCFreq,DIFS,PACKET_SEND_DUR,SLOT_DUR);
+            RxNode *nodeB = new RxNode(2,sim,channel,ACK_RTS_CTS_SND_DUR,SLOT_DUR);
+            RxNode *nodeD = new RxNode(4,sim,channel,ACK_RTS_CTS_SND_DUR,SLOT_DUR);
+            TxNode *nodeA = new TxNode(0,sim,channel,nodeB,nodeAFreq,DIFS,SIFS,PACKET_SEND_DUR,ACK_RTS_CTS_SND_DUR,SLOT_DUR);
+            TxNode *nodeC = new TxNode(1,sim,channel,nodeD,nodeCFreq,DIFS,SIFS,PACKET_SEND_DUR,ACK_RTS_CTS_SND_DUR,SLOT_DUR);
            
             if (! nodeA ||!nodeB || ! nodeC || !nodeD) {
                 cout << "failed to allocate memory for nodes"<< endl;
@@ -76,26 +82,37 @@ int main(int argc, const char * argv[]) {
             uint32_t cThruput = nodeC->SuccessfulSends() * PACKETS_PER_BYTE;
             float cUtil = (((float)nodeC->SuccessfulSends()*PACKET_SEND_DUR)/(float)simDuration) * 100.0f;
             
-            cout << "------------------------------------------------------------" << endl;
-            cout << " Simulation: " << jjj << endl;
-            cout << "Node A :" << endl;
-            cout << "   Lambda: " <<nodeAFreq <<endl;
+                        printf("%u,%u,%s,%u\n",jjj,nodeA->id(),"Lambda",nodeAFreq);
+            printf("%u,%u,%s,%u\n",jjj,nodeA->id(),"Throughput",aThruput);
+            printf("%u,%u,%s,%u\n",jjj,nodeA->id(),"Collisions",nodeA->TotalCollisions());
+            printf("%u,%u,%s,%.2f\n",jjj,nodeA->id(),"Utilization",aUtil);
+            printf("%u,%u,%s,%u\n",jjj,nodeC->id(),"Lambda",nodeCFreq);
+            printf("%u,%u,%s,%u\n",jjj,nodeC->id(),"Throughput",cThruput);
+            printf("%u,%u,%s,%u\n",jjj,nodeC->id(),"Collisions",nodeC->TotalCollisions());
+            printf("%u,%u,%s,%.2f\n",jjj,nodeC->id(),"Utilization",cUtil);
+            printf("%u,%u,%s,%u\n",jjj,2,"Throughput",aThruput + cThruput);
+            printf("%u,%u,%s,%.2f\n",jjj,2,"Utilization",aUtil +cUtil);
+            printf("%u,%u,%s,%.2f\n",jjj,2,"Fairnessindex",aUtil/cUtil);
+
+            //cout << " Simulation: " << jjj << endl;
+            //cout << "Node A :" << endl;
+            //cout << "   Lambda: " <<nodeAFreq <<endl;
             //cout << "   Sends: " << nodeA->SuccessfulSends()<< endl;
-            cout << "   Throughput: " << aThruput << " Bytes" << endl;
-            cout << "   Collisions: " << nodeA->TotalCollisions()<< endl;
-            cout << "   Utilization: " << aUtil << "%"<< endl;
-            cout << "Node C :" << endl;
-            cout << "   Lambda: " <<nodeCFreq <<endl;
+            //cout << "   Throughput: " << aThruput << " Bytes" << endl;
+            //cout << "   Collisions: " << nodeA->TotalCollisions()<< endl;
+            //cout << "   Utilization: " << aUtil << "%"<< endl;
+            //cout << "Node C :" << endl;
+            //cout << "   Lambda: " <<nodeCFreq <<endl;
             //cout << "   Sends: " << nodeC->SuccessfulSends()<< endl;
-            cout << "   Throughput: " << cThruput << " Bytes" << endl;
-            cout << "   Collisions: " << nodeC->TotalCollisions()<< endl;
-            cout << "   Utilization: " << cUtil<< "%"<< endl;
-            cout << "Total:"<< endl;
-            cout << "   Throughput: " << aThruput + cThruput << " Bytes" << endl;
-            cout << "   Utilization: " << aUtil +cUtil << "%" << endl;
-            cout << "   FairnessIndex (A:C): " << aUtil/cUtil << endl;
+            //cout << "   Throughput: " << cThruput << " Bytes" << endl;
+            //cout << "   Collisions: " << nodeC->TotalCollisions()<< endl;
+            //cout << "   Utilization: " << cUtil<< "%"<< endl;
+            //cout << "Total:"<< endl;
+            //cout << "   Throughput: " << aThruput + cThruput << " Bytes" << endl;
+            //cout << "   Utilization: " << aUtil +cUtil << "%" << endl;
+            //cout << "   FairnessIndex (A:C): " << aUtil/cUtil << endl;
             
-            sim->PrintData();
+            //sim->PrintData();
             cout << endl << endl;
             
             // destroy objects

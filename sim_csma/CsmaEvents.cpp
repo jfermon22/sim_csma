@@ -9,7 +9,9 @@
 
 #include "CsmaEvents.h"
 
-DIFS::DIFS(TxNode *sNode,sim_time execTime,sim_time duration,sim_time slotDur,bool shouldPause):
+/*  DIFS  */
+
+DIFS::DIFS(TxNode *sNode, sim_time execTime,sim_time duration,sim_time slotDur,bool shouldPause):
 Event(execTime,VERY_LOW),timeLeft(duration),slotDuration(slotDur),m_shouldPause(shouldPause)
 {
     sendingNode = sNode;
@@ -35,10 +37,11 @@ bool DIFS::isComplete()
 
 /*  PACKET READY EVENT  */
 
-PacketReady::PacketReady(TxNode *sNode,sim_time newTime,sim_time newDifs, sim_time slotDur,bool isretry):
+PacketReady::PacketReady(TxNode *sNode,RxNode *rnode,sim_time newTime,sim_time newDifs, sim_time slotDur,bool isretry):
 Event(newTime,VERY_LOW),difs(newDifs),slotDuration(slotDur),isRetry(isretry)
 {
     sendingNode = sNode;
+    rxNode = rnode;
 }
 
 void PacketReady::execute(){
@@ -48,26 +51,77 @@ void PacketReady::execute(){
 #endif
 }
 
-/*void PacketReady::scheduleSend(sim_time sendTime)
-{
-    sendingNode->scheduleSend(sendTime);
-}*/
-
 void PacketReady::scheduleBackoff()
 {
     sim_time backoff = sendingNode->getBackoff(0);
     sendingNode->scheduleDifs(new DIFS(sendingNode,backoff,difs,slotDuration,true));
 }
 
+/*  RTS EVENT  */
+RTS::RTS(TxNode *sNode,RxNode *rnode, sim_time newTime, sim_time sendDuration):
+Send(sNode,rnode,newTime,sendDuration)
+{
+    
+}
+
+void RTS::execute()
+{
+    if (sendingNode->channel()->isIdle){
+        sendingNode->RtsSuccess();
+        sendingNode->channel()->isIdle = false;
+        sendingNode->channel()->owner = sendingNode->id();
+#ifdef VERBOSE
+        std::cout << time << "," << sendingNode->id() << ",RTS" <<  endl;
+#endif
+    } else {
+        sendingNode->handleBusy(this);
+#ifdef VERBOSE
+        std::cout << time << "," << sendingNode->id() <<  ",AbortSend_ChanBusy"<< endl;
+#endif
+    }
+}
+
+void RTS::executeDuplicate(){
+    sendingNode->handleCollision();
+}
 
 
+/*  CTS EVENT  */
+CTS::CTS(TxNode *sNode, RxNode *rnode, sim_time newTime, sim_time sendDuration):
+Send(sNode,rnode,newTime,sendDuration)
+{
+    
+}
+
+void CTS::execute()
+{
+    if (! sendingNode->channel()->isIdle && sendingNode->channel()->owner ==sendingNode->id() ){
+        sendingNode->schedulePacketSend(duration);
+#ifdef VERBOSE
+        std::cout << time << "," << sendingNode->id() << ",CTS" <<  endl;
+#endif
+    } else {
+#ifdef VERBOSE
+        std::cout << time << "," << sendingNode->id() <<  ",AbortCTS_ChanNotIdle or not owned by sender"<< endl;
+#endif
+    }
+}
+
+
+/*  PACKET SEND EVENT  */
+PacketSend::PacketSend( TxNode *sNode, RxNode *rNode, sim_time newTime, sim_time sendDuration):
+Send(sNode,rNode,newTime,sendDuration)
+{
+    
+}
                                   
 /*  SEND EVENT  */
 
-Send::Send(TxNode *sNode,sim_time newTime,sim_time sendDuration):
+Send::Send(TxNode *sNode, RxNode *rnode,sim_time newTime,sim_time sendDuration):
     Event(newTime,VERY_LOW,true)
 {
     sendingNode = sNode;
+    receivingNode = rnode;
 }
 
 

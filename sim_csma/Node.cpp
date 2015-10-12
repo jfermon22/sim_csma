@@ -18,23 +18,22 @@ Node(newId,sim,channel, 1,0,sendDur,slotDur )
     
 }
 
-void RxNode::ScheduleAck(){
-    
+void RxNode::ScheduleAck(TxNode *txNode,sim_time newTime){
+    txNode->schedulePacketReady(random_distro::exponential(sendFreq,random_distro::TEN_USECS));
     
 }
 
-void RxNode::ScheduleCTS(){
-    
-    
+void RxNode::ScheduleCTS(TxNode *txNode,sim_time newTime){
+      m_sim->ScheduleEvent(new CTS(txNode,this,newTime,sendDuration));
 }
 
 
 
 TxNode::TxNode(uint newId, Simulation *sim, Channel *channel, RxNode *rNode,
-       uint32_t sendMsgFreq,sim_time difsTime,
-               sim_time sendDur,sim_time slotDur,bool useVcs ):
+       uint32_t sendMsgFreq,sim_time difsTime, sim_time sifstime,
+               sim_time sendDur,sim_time ackRtsCtsDur, sim_time slotDur,bool useVcs ):
 Node(newId,sim,channel,sendMsgFreq,difsTime,sendDur,slotDur ),
-m_usesVcs(useVcs),rxNode(rNode)
+m_usesVcs(useVcs),sifs(sifstime),rxNode(rNode)
 {
     
 }
@@ -63,17 +62,16 @@ void TxNode::endTransmit(){
     schedulePacketReady(random_distro::exponential(sendFreq,random_distro::TEN_USECS));
 }
 
-void TxNode::sendRTS(){
-    
-    
+void TxNode::RtsSuccess(){
+    rxNode->ScheduleCTS(this,ack_send_dur);
 }
 
 void TxNode::schedulePacketReady(sim_time eventTime){
-    m_sim->ScheduleEvent(new PacketReady(this,eventTime,difs,slotDuration));
+    m_sim->ScheduleEvent(new PacketReady(this,rxNode,eventTime,difs,slotDuration));
 }
 
 void TxNode::schedulePacketSend(sim_time nextSendTime){
-    m_sim->ScheduleEvent(new Send(this,nextSendTime,sendDuration));
+    m_sim->ScheduleEvent(new Send(this,rxNode,nextSendTime,sendDuration));
 }
 
 void TxNode::scheduleDifs(Event *event)
@@ -90,9 +88,9 @@ void TxNode::scheduleEndSend(sim_time endTime){
 }
 
 Node::Node(uint32_t newID,Simulation *sim,Channel *channel, uint32_t msgFreq,
-           sim_time difsTime,sim_time sendDur,sim_time slotDur ):Entity(newID ),
+           sim_time difsTime,sim_time sendDur,sim_time acksenddur,sim_time slotDur ):Entity(newID ),
 consecutiveCollissions(0),totalCollisions(0),successfulSends(0),
-sendFreq(msgFreq),sendDuration(sendDur),
+sendFreq(msgFreq),sendDuration(sendDur),ack_send_dur(acksenddur),
 slotDuration(slotDur),difs(difsTime)
 {
     m_sim = sim;
