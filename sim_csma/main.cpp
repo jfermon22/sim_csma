@@ -12,9 +12,11 @@ using namespace std;
 
 //const uint msgFreq = 100;
 const sim_time simDuration = 10;
-const sim_time SEND_DUR = 0.002;
+const sim_time PACKET_SEND_DUR = 0.002;
+const sim_time ACK_RTS_CTS_SND_SUR=0.00004;
 const sim_time SLOT_DUR = 0.00001;
 const sim_time DIFS = 0.00004;
+const sim_time SIFS = 0.00004;
 const uint32_t PACKETS_PER_BYTE = 1500;
 //const random_distro::precision PRECISION = random_distro::TEN_USECS;
 
@@ -47,26 +49,32 @@ int main(int argc, const char * argv[]) {
             uint32_t nodeCFreq = (*it);
             
             //init nodes
-            Node *nodeA = new Node(0,sim,channel,nodeAFreq,DIFS,SEND_DUR,SLOT_DUR);
-            Node *nodeC = new Node(1,sim,channel,nodeCFreq,DIFS,SEND_DUR,SLOT_DUR);
-            if (! nodeA  || ! nodeC ) {
+            RxNode *nodeB = new RxNode(2,sim,channel,ACK_RTS_CTS_SND_SUR,SLOT_DUR);
+            RxNode *nodeD = new RxNode(4,sim,channel,ACK_RTS_CTS_SND_SUR,SLOT_DUR);
+            TxNode *nodeA = new TxNode(0,sim,channel,nodeB,nodeAFreq,DIFS,PACKET_SEND_DUR,SLOT_DUR);
+            TxNode *nodeC = new TxNode(1,sim,channel,nodeD,nodeCFreq,DIFS,PACKET_SEND_DUR,SLOT_DUR);
+           
+            if (! nodeA ||!nodeB || ! nodeC || !nodeD) {
                 cout << "failed to allocate memory for nodes"<< endl;
                 exit(1);
             }
             
-            //seed starting events
-            sim->ScheduleEvent(new Send(nodeA,DIFS,SEND_DUR));
-            sim->ScheduleEvent(new Send(nodeC,DIFS,SEND_DUR));
+             //seed starting events
+            nodeA->schedulePacketReady(0);
+            nodeC->schedulePacketReady(0);
+           
+            //sim->ScheduleEvent(new Send(nodeA,DIFS,SEND_DUR));
+            //sim->ScheduleEvent(new Send(nodeC,DIFS,SEND_DUR));
             
             //run simulation
             sim->Run();
             
             
-            
+        
             uint32_t aThruput = nodeA->SuccessfulSends() * PACKETS_PER_BYTE;
-            float aUtil = (((float)nodeA->SuccessfulSends()*SEND_DUR)/(float)simDuration) * 100.0f;
+            float aUtil = (((float)nodeA->SuccessfulSends()*PACKET_SEND_DUR)/(float)simDuration) * 100.0f;
             uint32_t cThruput = nodeC->SuccessfulSends() * PACKETS_PER_BYTE;
-            float cUtil = (((float)nodeC->SuccessfulSends()*SEND_DUR)/(float)simDuration) * 100.0f;
+            float cUtil = (((float)nodeC->SuccessfulSends()*PACKET_SEND_DUR)/(float)simDuration) * 100.0f;
             
             cout << "------------------------------------------------------------" << endl;
             cout << " Simulation: " << jjj << endl;
@@ -75,7 +83,7 @@ int main(int argc, const char * argv[]) {
             //cout << "   Sends: " << nodeA->SuccessfulSends()<< endl;
             cout << "   Throughput: " << aThruput << " Bytes" << endl;
             cout << "   Collisions: " << nodeA->TotalCollisions()<< endl;
-            cout << "   Utilization: " <<aUtil << "%"<< endl;
+            cout << "   Utilization: " << aUtil << "%"<< endl;
             cout << "Node C :" << endl;
             cout << "   Lambda: " <<nodeCFreq <<endl;
             //cout << "   Sends: " << nodeC->SuccessfulSends()<< endl;
@@ -84,6 +92,7 @@ int main(int argc, const char * argv[]) {
             cout << "   Utilization: " << cUtil<< "%"<< endl;
             cout << "Total:"<< endl;
             cout << "   Throughput: " << aThruput + cThruput << " Bytes" << endl;
+            cout << "   Utilization: " << aUtil +cUtil << "%" << endl;
             cout << "   FairnessIndex (A:C): " << aUtil/cUtil << endl;
             
             sim->PrintData();

@@ -16,13 +16,13 @@
 
 class DIFS : public Event
 {
-    Node *sendingNode;
+    TxNode *sendingNode;
     sim_time timeLeft;
     sim_time slotDuration;
     bool m_shouldPause;
     void scheduleBackoff();
 public:
-    DIFS(Node *sNode,sim_time execTime,sim_time duration,sim_time slotDur,bool shouldPause);
+    DIFS(TxNode *sNode,sim_time execTime,sim_time duration,sim_time slotDur,bool shouldPause);
     ~DIFS(){};
     void execute();
     bool isComplete();
@@ -30,14 +30,14 @@ public:
 
 class PacketReady : public Event
 {
-    Node *sendingNode;
+    TxNode *sendingNode;
     sim_time difs;
     sim_time slotDuration;
     bool isRetry;
     void scheduleSend(sim_time sendTime);
     void scheduleBackoff();
 public:
-    PacketReady(Node *sNode,sim_time execTime,sim_time difsTime, sim_time slotDur, bool isretry = false);
+    PacketReady(TxNode *sNode,sim_time execTime,sim_time difsTime, sim_time slotDur, bool isretry = false);
     ~PacketReady(){};
     void execute();
 };
@@ -45,21 +45,52 @@ public:
 
 class Send : public Event 
 {
-    Node *sendingNode;
+protected:
+    TxNode *sendingNode;
+    RxNode *receiveingNode;
 	sim_time duration;
 public:
-    Send(Node *sNode, sim_time newTime = 0.0f, sim_time sendDuration = 0.00001f);
+    Send(TxNode *sNode, sim_time newTime = 0.0f, sim_time sendDuration = 0.00001f);
     ~Send(){};
     void execute();
     void executeDuplicate();
     
 };
 
+class Ack : public Send
+{
+public:
+    Ack(Node *sNode, sim_time newTime = 0.0f, sim_time sendDuration = 0.00004f);
+    ~Ack(){};
+    void execute();
+    void executeDuplicate();
+};
+
+class RTS : public Send
+{
+public:
+    RTS(Node *sNode, sim_time newTime = 0.0f, sim_time sendDuration = 0.00004f);
+    ~RTS(){};
+    void execute();
+    void executeDuplicate();
+};
+
+class CTS : public Event
+{
+public:
+    CTS(Node *sNode, sim_time newTime = 0.0f, sim_time sendDuration = 0.00004f);
+    ~CTS(){};
+    void execute();
+    void executeDuplicate();
+};
+
+
+
 class EndSend : public Event 
 {
-    Node *sendingNode;
+    TxNode *sendingNode;
 public:
-    EndSend(Node *sNode,sim_time newTime = 0.0f);
+    EndSend(TxNode *sNode,sim_time newTime = 0.0f);
     ~EndSend(){};
     void execute();
 	//void executeDuplicate();

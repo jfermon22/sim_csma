@@ -16,7 +16,11 @@
 const uint16_t CWo = 8;
 const uint16_t CWmax = 1024;
 
+//#define VERBOSE
+
+
 class Node: public Entity {
+protected:
     uint32_t consecutiveCollissions;
     uint32_t totalCollisions;
     uint32_t successfulSends;
@@ -27,28 +31,53 @@ class Node: public Entity {
     sim_time slotDuration;
     sim_time difs;
 	
-    void scheduleEndSend(sim_time endTime);
 public:
     Node(uint newId, Simulation *sim, Channel *channel,
          uint32_t sendMsgFreq = 1,sim_time difsTime=.00004,
          sim_time sendDur = .00001,sim_time slotDur = .00001 );
 	~Node(){}
-   
+    
     void collisionOccured();
-	uint32_t id();
-	void sendSuccess();
-	void handleCollision();
-    void handleBusy(Event *e);
-	void endTransmit();
-    void scheduleSend(sim_time sendTime);
-    void schedulePacketReady(sim_time eventTime);
-    //void reschedulePacketReady(Event *event);
-    void scheduleDifs(Event *event);
+	uint32_t id();    void scheduleSend(sim_time sendTime);
     sim_time getBackoff(uint32_t nCollisions = 1);
     sim_time getSimTime();
     uint32_t SuccessfulSends() const {return successfulSends;}
     uint32_t TotalCollisions() const {return totalCollisions;}
     Channel* channel();
 };
+
+class RxNode :public Node
+{
+    
+public:
+    RxNode(uint newId, Simulation *sim, Channel *channel,
+           sim_time sendDur = .00001,sim_time slotDur = .00001);
+    void ScheduleAck();
+    void ScheduleCTS();
+};
+
+class TxNode :public Node
+{
+    bool m_usesVcs;
+    RxNode* rxNode;
+    public:
+    TxNode(uint newId, Simulation *sim, Channel *channel, RxNode *rNode,
+         uint32_t sendMsgFreq = 1,sim_time difsTime=.00004,
+         sim_time sendDur = .00001,sim_time slotDur = .00001,bool useVcs = false );
+    
+    void sendSuccess();
+    void handleCollision();
+    void handleBusy(Event *e);
+    void schedulePacketSend(sim_time sendTime);
+    void schedulePacketReady(sim_time eventTime);
+    void scheduleDifs(Event *event);
+    void scheduleEndSend(sim_time endTime);
+
+
+    void endTransmit();
+    void sendRTS();
+};
+
+
 
 #endif /* defined(__sim_csma__Node__) */

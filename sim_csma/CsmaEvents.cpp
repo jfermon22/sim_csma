@@ -6,9 +6,10 @@
 //
 //
 
+
 #include "CsmaEvents.h"
 
-DIFS::DIFS(Node *sNode,sim_time execTime,sim_time duration,sim_time slotDur,bool shouldPause):
+DIFS::DIFS(TxNode *sNode,sim_time execTime,sim_time duration,sim_time slotDur,bool shouldPause):
 Event(execTime,VERY_LOW),timeLeft(duration),slotDuration(slotDur),m_shouldPause(shouldPause)
 {
     sendingNode = sNode;
@@ -18,7 +19,9 @@ void DIFS::execute()
 {
     if (sendingNode->channel()->isIdle || ! m_shouldPause ) {
         timeLeft -= slotDuration;
-         //std::cout << sendingNode->getSimTime() << "," << sendingNode->id() <<  ",DIFS,senseTimeLeft: "<<timeLeft << endl;
+#ifdef VERBOSE
+         std::cout << sendingNode->getSimTime() << "," << sendingNode->id() <<  ",DIFS,senseTimeLeft: "<< timeLeft << endl;
+#endif
     }
     time = slotDuration;
     sendingNode->scheduleDifs(this);
@@ -32,7 +35,7 @@ bool DIFS::isComplete()
 
 /*  PACKET READY EVENT  */
 
-PacketReady::PacketReady(Node *sNode,sim_time newTime,sim_time newDifs, sim_time slotDur,bool isretry):
+PacketReady::PacketReady(TxNode *sNode,sim_time newTime,sim_time newDifs, sim_time slotDur,bool isretry):
 Event(newTime,VERY_LOW),difs(newDifs),slotDuration(slotDur),isRetry(isretry)
 {
     sendingNode = sNode;
@@ -40,7 +43,9 @@ Event(newTime,VERY_LOW),difs(newDifs),slotDuration(slotDur),isRetry(isretry)
 
 void PacketReady::execute(){
         sendingNode->scheduleDifs(new DIFS(sendingNode,0,difs,slotDuration,false));
-       // std::cout << time << "," << sendingNode->id() << ",PacketReady" <<  endl;
+#ifdef VERBOSE
+        std::cout << time << "," << sendingNode->id() << ",PacketReady" <<  endl;
+#endif
 }
 
 /*void PacketReady::scheduleSend(sim_time sendTime)
@@ -59,7 +64,7 @@ void PacketReady::scheduleBackoff()
                                   
 /*  SEND EVENT  */
 
-Send::Send(Node *sNode,sim_time newTime,sim_time sendDuration):
+Send::Send(TxNode *sNode,sim_time newTime,sim_time sendDuration):
     Event(newTime,VERY_LOW,true)
 {
     sendingNode = sNode;
@@ -72,10 +77,14 @@ void Send::execute()
         sendingNode->sendSuccess();
         sendingNode->channel()->isIdle = false;
         sendingNode->channel()->owner = sendingNode->id();
-        //std::cout << time << "," << sendingNode->id() << ",Send" <<  endl;
+#ifdef VERBOSE
+        std::cout << time << "," << sendingNode->id() << ",Send" <<  endl;
+#endif
     } else {
         sendingNode->handleBusy(this);
-       // std::cout << time << "," << sendingNode->id() <<  ",AbortSend_ChanBusy"<< endl;
+#ifdef VERBOSE
+        std::cout << time << "," << sendingNode->id() <<  ",AbortSend_ChanBusy"<< endl;
+#endif
     }
 }
 
@@ -83,7 +92,7 @@ void Send::executeDuplicate(){
 	sendingNode->handleCollision();
 }
 
-EndSend::EndSend(Node *sNode,sim_time newTime):
+EndSend::EndSend(TxNode *sNode,sim_time newTime):
     Event(newTime,VERY_LOW)
 {
     sendingNode = sNode;
@@ -93,6 +102,8 @@ EndSend::EndSend(Node *sNode,sim_time newTime):
 void EndSend::execute(){
 	sendingNode->endTransmit();
     sendingNode->channel()->isIdle = true;
-    //std::cout << time << "," << sendingNode->id() << ",End" <<  endl;
+#ifdef VERBOSE
+    std::cout << time << "," << sendingNode->id() << ",End" <<  endl;
+#endif
 }
 

@@ -64,7 +64,7 @@ void Simulation::Run()
         }
         
         if ( sendEvents > 1){
-            std::cout << curTime << ",Collision" <<  endl;
+            //std::cout << curTime << ",Collision" <<  endl;
             collisions++;
         }
         for (it = curEvents.begin(); it != curEvents.end(); ++it)
