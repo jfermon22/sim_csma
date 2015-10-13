@@ -15,10 +15,15 @@
 
 class FreeChannel : public Event
 {
-	Channel *channel;
-	Simulation *sim;
+    Channel *channel;
+    Simulation *sim;
 public:
-    FreeChannel( Channel *c, Simulation *nSim, sim_time newTime = 0.0f);
+    FreeChannel( Channel *c, Simulation *nSim, sim_time newTime = 0.0f):
+    Event(newTime,VERY_LOW)
+    {
+        channel =c;
+        sim = nSim;
+    }
     ~FreeChannel(){};
     void execute();
 };
@@ -31,10 +36,12 @@ class DIFS : public Event
     bool m_shouldPause;
     void scheduleBackoff();
 public:
-    DIFS(TxNode *sNode, sim_time execTime,sim_time duration,sim_time slotDur,bool shouldPause);
+    DIFS(TxNode *sNode, sim_time execTime,sim_time duration,sim_time slotDur,bool shouldPause):
+    Event(execTime,VERY_LOW),timeLeft(duration),slotDuration(slotDur),m_shouldPause(shouldPause)
+    { sendingNode = sNode; }
     ~DIFS(){};
     void execute();
-    bool isComplete();
+    bool isComplete() const { return timeLeft <= 0;}
 };
 
 class PacketReady : public Event
@@ -47,20 +54,30 @@ class PacketReady : public Event
     void scheduleSend(sim_time sendTime);
     void scheduleBackoff();
 public:
-    PacketReady(TxNode *sNode,RxNode *rnode,sim_time execTime,sim_time difsTime, sim_time slotDur, bool isretry = false);
+    PacketReady(TxNode *sNode,RxNode *rnode,sim_time execTime,sim_time difsTime, sim_time slotDur, bool isretry = false):
+    Event(execTime,VERY_LOW),difs(difsTime),slotDuration(slotDur),isRetry(isretry)
+    {
+        sendingNode = sNode;
+        rxNode = rnode;
+    }
     ~PacketReady(){};
     void execute();
 };
 
 
-class Send : public Event 
+class Send : public Event
 {
 protected:
     TxNode *sendingNode;
     RxNode *receivingNode;
-	sim_time duration;
+    sim_time duration;
 public:
-    Send(TxNode *sNode, RxNode *rNode, sim_time newTime = 0.0f, sim_time sendDuration = 0.00001f);
+    Send(TxNode *sNode, RxNode *rNode, sim_time newTime = 0.0f, sim_time sendDuration = 0.00001f):
+    Event(newTime,VERY_LOW,true),duration(sendDuration)
+    {
+        sendingNode = sNode;
+        receivingNode = rNode;
+    }
     ~Send(){};
     void execute();
     void executeDuplicate();
@@ -70,14 +87,18 @@ public:
 class PacketSend : public Send
 {
 public:
-    PacketSend(TxNode *sNode,RxNode *rNode, sim_time newTime = 0.0f, sim_time sendDuration = 0.00004f);
+    PacketSend(TxNode *sNode,RxNode *rNode, sim_time newTime = 0.0f, sim_time sendDuration = 0.00004f):
+    Send(sNode,rNode,newTime,sendDuration)
+    {}
     ~PacketSend(){};
 };
 
 class RTS : public Send
 {
 public:
-    RTS(TxNode *sNode,RxNode *rnode, sim_time newTime = 0.0f, sim_time sendDuration = 0.00004f);
+    RTS(TxNode *sNode,RxNode *rnode, sim_time newTime = 0.0f, sim_time sendDuration = 0.00004f):
+    Send(sNode,rnode,newTime,sendDuration)
+    {}
     ~RTS(){};
     void execute();
     void executeDuplicate();
@@ -86,7 +107,9 @@ public:
 class CTS : public Send
 {
 public:
-    CTS(TxNode *sNode, RxNode *rnode, sim_time newTime = 0.0f, sim_time sendDuration = 0.00004f);
+    CTS(TxNode *sNode, RxNode *rnode, sim_time newTime = 0.0f, sim_time sendDuration = 0.00004f):
+    Send(sNode,rnode,newTime,sendDuration)
+    {}
     ~CTS(){};
     void execute();
     void executeDuplicate(){ execute();}
@@ -96,21 +119,25 @@ public:
 class Ack : public Send
 {
 public:
-    Ack(TxNode *sNode, RxNode *rnode, sim_time newTime = 0.0f, sim_time sendDuration = 0.00004f);
+    Ack(TxNode *sNode, RxNode *rnode, sim_time newTime = 0.0f, sim_time sendDuration = 0.00004f):
+    Send(sNode,rnode,newTime,sendDuration)
+    {}
     ~Ack(){};
     void execute();
 };
 
 
 
-class EndSend : public Event 
+class EndSend : public Event
 {
     TxNode *sendingNode;
 public:
-    EndSend(TxNode *sNode,sim_time newTime = 0.0f);
+    EndSend(TxNode *sNode,sim_time newTime = 0.0f):
+    Event(newTime,VERY_LOW)
+    { sendingNode = sNode; }
     ~EndSend(){};
     void execute();
-	//void executeDuplicate();
+    //void executeDuplicate();
     
 };
 

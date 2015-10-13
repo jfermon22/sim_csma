@@ -16,7 +16,9 @@ class Entity {
 protected:
     uint32_t identity;
 public:
-    Entity(uint32_t newID);
+    Entity(uint32_t newID):identity(newID)
+    {}
+
     
 };
 

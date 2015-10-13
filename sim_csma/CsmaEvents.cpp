@@ -9,13 +9,7 @@
 
 #include "CsmaEvents.h"
 
-/*  DIFS  */
-
-DIFS::DIFS(TxNode *sNode, sim_time execTime,sim_time duration,sim_time slotDur,bool shouldPause):
-Event(execTime,VERY_LOW),timeLeft(duration),slotDuration(slotDur),m_shouldPause(shouldPause)
-{
-    sendingNode = sNode;
-}
+///////////////////////*  DIFS  *////////////////////////
 
 void DIFS::execute()
 {
@@ -29,22 +23,11 @@ void DIFS::execute()
     sendingNode->scheduleDifs(this);
 }
 
-bool DIFS::isComplete()
+
+////////////////////////*  PACKET READY EVENT  *////////////////////////
+
+void PacketReady::execute()
 {
-    return timeLeft <= 0;
-}
-
-
-/*  PACKET READY EVENT  */
-
-PacketReady::PacketReady(TxNode *sNode,RxNode *rnode,sim_time newTime,sim_time newDifs, sim_time slotDur,bool isretry):
-Event(newTime,VERY_LOW),difs(newDifs),slotDuration(slotDur),isRetry(isretry)
-{
-    sendingNode = sNode;
-    rxNode = rnode;
-}
-
-void PacketReady::execute(){
         sendingNode->scheduleDifs(new DIFS(sendingNode,0,difs,slotDuration,false));
 #ifdef VERBOSE
         std::cout << time << "," << sendingNode->id() << ",PacketReady" <<  endl;
@@ -57,13 +40,7 @@ void PacketReady::scheduleBackoff()
     sendingNode->scheduleDifs(new DIFS(sendingNode,backoff,difs,slotDuration,true));
 }
 
-/*  RTS EVENT  */
-RTS::RTS(TxNode *sNode,RxNode *rnode, sim_time newTime, sim_time sendDuration):
-Send(sNode,rnode,newTime,sendDuration)
-{
-    
-}
-
+////////////////////////*  RTS EVENT  *////////////////////////
 void RTS::execute()
 {
     if (sendingNode->channel()->isIdle){
@@ -81,20 +58,15 @@ void RTS::execute()
     }
 }
 
-void RTS::executeDuplicate(){
+void RTS::executeDuplicate()
+{
     if (sendingNode->channel()->isIdle)
         sendingNode->handleCollision();
     else
         sendingNode->handleBusy(this);
 }
 
-
-/*  CTS EVENT  */
-CTS::CTS(TxNode *sNode, RxNode *rnode, sim_time newTime, sim_time sendDuration):
-Send(sNode,rnode,newTime,sendDuration)
-{
-    
-}
+////////////////////////*  CTS EVENT  *////////////////////////
 
 void CTS::execute()
 {
@@ -110,13 +82,7 @@ void CTS::execute()
     }
 }
 
-
-/*  ACK EVENT */
-Ack::Ack(TxNode *sNode, RxNode *rnode, sim_time newTime, sim_time sendDuration):
-Send(sNode,rnode,newTime,sendDuration)
-{
-    
-}
+////////////////////////*  ACK EVENT *////////////////////////
 
 void Ack::execute()
 {
@@ -133,24 +99,7 @@ void Ack::execute()
     }
 }
 
-
-
-/*  PACKET SEND EVENT  */
-PacketSend::PacketSend( TxNode *sNode, RxNode *rNode, sim_time newTime, sim_time sendDuration):
-Send(sNode,rNode,newTime,sendDuration)
-{
-    
-}
-                                  
-/*  SEND EVENT  */
-
-Send::Send(TxNode *sNode, RxNode *rnode,sim_time newTime,sim_time sendDuration):
-    Event(newTime,VERY_LOW,true),duration(sendDuration)
-{
-    sendingNode = sNode;
-    receivingNode = rnode;
-}
-
+////////////////////////*  SEND EVENT  *////////////////////////
 
 void Send::execute()
 {
@@ -169,18 +118,15 @@ void Send::execute()
     }
 }
 
-void Send::executeDuplicate(){
+void Send::executeDuplicate()
+{
 	sendingNode->handleCollision();
 }
 
-EndSend::EndSend(TxNode *sNode,sim_time newTime):
-    Event(newTime,VERY_LOW)
+////////////////////////*  END SEND EVENT  *////////////////////////
+
+void EndSend::execute()
 {
-    sendingNode = sNode;
-}
-
-
-void EndSend::execute(){
 	sendingNode->endTransmit();
    // sendingNode->channel()->isIdle = true;
 #ifdef VERBOSE
@@ -188,15 +134,10 @@ void EndSend::execute(){
 #endif
 }
 
-FreeChannel::FreeChannel( Channel *c,Simulation *nSim, sim_time newTime):
-    Event(newTime,VERY_LOW)
+////////////////////////*  FREE CHANNEL EVENT  *////////////////////////
+
+void FreeChannel::execute()
 {
-	channel =c;
-	sim = nSim;
-}
-
-
-void FreeChannel::execute(){
 #ifdef VERBOSE
 	cout <<sim->GetTime()<< ",Channel freed" << endl;
 #endif

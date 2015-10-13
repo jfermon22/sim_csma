@@ -8,16 +8,6 @@
 
 #include "SimQueue.h"
 
-void SimQueue::insert(Event *event)
-{
-    myQueue.push(event);
-}
-
-uint64_t SimQueue::size()
-{
-   return myQueue.size();
-}
-
 vector<Event*> SimQueue::getNext()
 {
     vector<Event*> curEventsVec;
@@ -33,17 +23,3 @@ vector<Event*> SimQueue::getNext()
     return curEventsVec;
 }
 
-Event* SimQueue::top(){
-    return myQueue.top();
-}
-
-bool SimQueue::empty(){
-    return myQueue.empty();
-}
-
-
-void SimQueue::clear(){
-    while ( ! myQueue.empty())
-        myQueue.pop();
-
-}

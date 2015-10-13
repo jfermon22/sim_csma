@@ -20,12 +20,12 @@ class SimQueue {
     priority_queue< Event*, vector<Event*>, ptr_greater<Event*> > myQueue;
 public:
     
-    void insert(Event *event);
+    void insert(Event *event){ myQueue.push(event); }
     vector<Event*> getNext();
-    bool empty();
-    void clear();
-    uint64_t size();
-    Event* top();
+    bool empty() const      { return myQueue.empty();}
+    void clear()            { while ( ! myQueue.empty() ) myQueue.pop();}
+    uint64_t size() const   { return myQueue.size();}
+    Event* top() const      { return myQueue.top();}
 };
 
 #endif /* defined(__sim_csma__SimQueue__) */
