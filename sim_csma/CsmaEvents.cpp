@@ -69,8 +69,7 @@ void RTS::execute()
     if (sendingNode->channel()->isIdle){
         sendingNode->RtsSuccess();
         sendingNode->channel()->isIdle = false;
-        sendingNode->channel()->owner = sendingNode->id();
-        sendingNode->channel()->lastRTSTime = sendingNode->getSimTime();
+        sendingNode->channel()->owner = sendingNode->id();        sendingNode->channel()->lastRTSTime = sendingNode->getSimTime();
 #ifdef VERBOSE
         std::cout << time << "," << sendingNode->id() << ",RTS" <<  endl;
 #endif
@@ -99,8 +98,7 @@ Send(sNode,rnode,newTime,sendDuration)
 
 void CTS::execute()
 {
-    if (! sendingNode->channel()->isIdle && sendingNode->channel()->owner ==sendingNode->id() ){
-		sendingNode->channel()->lastCTSTime = sendingNode->getSimTime();
+    if (! sendingNode->channel()->isIdle && sendingNode->channel()->owner ==sendingNode->id() ){		sendingNode->channel()->lastCTSTime = sendingNode->getSimTime();
         sendingNode->schedulePacketSend(duration);
 #ifdef VERBOSE
         std::cout << time << "," << sendingNode->id() << ",CTS" <<  endl;
@@ -134,8 +132,6 @@ void Ack::execute()
 #endif
     }
 }
-
-
 
 
 

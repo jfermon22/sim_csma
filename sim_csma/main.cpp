@@ -40,6 +40,7 @@ int main(int argc, const char * argv[]) {
     cout << "Sim Num,Node,Attribute,Value"<< endl;
     cout << "Node: 0 = A, 1 = C, 2 = Total"<< endl;
     cout << "------------------------------------------------------------" << endl;
+
     for (uint useVcs = 0; useVcs <= 1; useVcs++ )
 	{
 		for (uint nodeAFreqScale = 1; nodeAFreqScale <= 2; nodeAFreqScale++)
@@ -142,6 +143,6 @@ int main(int argc, const char * argv[]) {
 			}//for lamdas
 		} //for nodeA Freq scale
 	} //for use Vcs
-    
+
     return 0;
 }

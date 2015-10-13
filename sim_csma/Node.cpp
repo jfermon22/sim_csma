@@ -19,7 +19,7 @@ Node(newId,sim,channel, 1,0,sendDur,slotDur )
 }
 
 void RxNode::ScheduleAck(TxNode *txNode,sim_time newTime){
-	m_sim->ScheduleEvent(new Ack(txNode,this,newTime,sendDuration));
+    m_sim->ScheduleEvent(new Ack(txNode,this,newTime,sendDuration));
 }
 
 void RxNode::ScheduleCTS(TxNode *txNode,sim_time newTime){
@@ -31,7 +31,7 @@ void RxNode::ScheduleCTS(TxNode *txNode,sim_time newTime){
 TxNode::TxNode(uint newId, Simulation *sim, Channel *channel, RxNode *rNode,
        uint32_t sendMsgFreq,sim_time difsTime, sim_time sifstime,
                sim_time sendDur,sim_time ackRtsCtsDur, sim_time slotDur,bool useVcs ):
-Node(newId,sim,channel,sendMsgFreq,difsTime,sendDur,ackRtsCtsDur,slotDur ),
+    Node(newId,sim,channel,sendMsgFreq,difsTime,sendDur,ackRtsCtsDur,slotDur ),
 m_usesVcs(useVcs),sifs(sifstime),NAV(sendDuration + sifs + 2 * ack_send_dur)
 {
     rxNode = rNode;
