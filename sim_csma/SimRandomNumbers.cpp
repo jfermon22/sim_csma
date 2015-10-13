@@ -9,6 +9,8 @@
 
 #include "SimRandomNumbers.h"
 
+//#define GCC_4_2
+
 #ifdef GCC_4_2
 #include <time.h>
 #include <stdlib.h>

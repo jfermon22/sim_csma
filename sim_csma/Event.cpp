@@ -9,7 +9,7 @@
 #include "Event.h"
 
 Event::Event(sim_time newTime, Priority qpri,bool attemptedSend):
-priority(qpri),time(newTime),isSendAttempt(attemptedSend)
+isSendAttempt(attemptedSend),priority(qpri),time(newTime)
 {
     
 }

@@ -11,10 +11,13 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include "Event.h"
 
 struct Channel {
     bool isIdle;
     uint16_t owner;
+    sim_time lastRTSTime;
+	sim_time lastCTSTime;
     Channel():isIdle(true){}
 };
 

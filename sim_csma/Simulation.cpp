@@ -64,14 +64,16 @@ void Simulation::Run()
         }
         
         if ( sendEvents > 1){
-            //std::cout << curTime << ",Collision" <<  endl;
+#ifdef VERBOSE
+            std::cout << curTime << ",Collision" <<  endl;
+#endif
             collisions++;
         }
         for (it = curEvents.begin(); it != curEvents.end(); ++it)
         {
-            if ( sendEvents > 1)
+            if ( sendEvents > 1){
                 (*it)->executeDuplicate();
-            else
+            }else
                 (*it)->execute();
             nEvents++;
         }

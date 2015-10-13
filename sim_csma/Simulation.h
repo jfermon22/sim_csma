@@ -13,6 +13,8 @@
 #include "Event.h"
 #include "SimQueue.h"
 
+//#define VERBOSE
+
 class Simulation {
 protected:
     sim_time startTime;
