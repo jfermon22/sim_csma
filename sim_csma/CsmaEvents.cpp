@@ -132,7 +132,7 @@ void Ack::execute()
 
 void FreeChannel::execute()
 {
-	channel->isIdle = true;
+    channel->isIdle = true;
 	channel->owner = 999;
 #ifdef VERBOSE
     cout <<sim->GetTime()<< ",Channel freed" << endl;

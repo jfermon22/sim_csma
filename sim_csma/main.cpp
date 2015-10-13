@@ -41,6 +41,7 @@ int main(int argc, const char * argv[]) {
     cout << "Sim Num,Node,Attribute,Value"<< endl;
     cout << "Node: 0 = A, 1 = C, 2 = Total"<< endl;
     cout << "------------------------------------------------------------" << endl;
+    
     map <uint,float> fairnessIndexMap;
 //    for (uint hiddenNode = 0; hiddenNode <= 1; hiddenNode++ )
 //    {
@@ -158,7 +159,6 @@ int main(int argc, const char * argv[]) {
             cout <<"\nERROR:"<<  it2->first << ":" << it2->second<<endl;
     }
 
-    
     
     return 0;
 }

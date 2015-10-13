@@ -54,7 +54,8 @@ class PacketReady : public Event
     sim_time slotDuration;
 public:
     PacketReady(TxNode *sNode,RxNode *rnode,sim_time execTime,sim_time difsTime, sim_time slotDur, bool isretry = false):
-    Event(execTime,VERY_LOW),difs(difsTime),slotDuration(slotDur)    {
+    Event(execTime,VERY_LOW),difs(difsTime),slotDuration(slotDur)
+    {
         sendingNode = sNode;
         rxNode = rnode;
     }
@@ -136,7 +137,6 @@ public:
     { sendingNode = sNode; }
     ~EndSend(){};
     void execute();
-    
 };
 
 

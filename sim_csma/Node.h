@@ -90,8 +90,7 @@ public:
     { rxNode = rNode; }
     
     void executeSend();
-    void executeRts();
-    void handleCollision();
+    void executeRts();    void handleCollision();
     void handleBusy();
     void endTransmit();
     void schedulePacketSend(sim_time sendTime);
@@ -103,7 +102,5 @@ public:
     bool UsesVCS() const {return m_usesVcs;}
     bool IsHiddenNode() const {return isHiddenNode;}
 };
-
-
 
 #endif /* defined(__sim_csma__Node__) */
