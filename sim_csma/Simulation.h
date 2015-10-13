@@ -25,19 +25,19 @@ protected:
 	uint32_t collisions;
     
 public:
-    Simulation(sim_time stop, sim_time start = 0);
-    ~Simulation();
+    Simulation(sim_time stop, sim_time start = 0):
+    startTime(start),stopTime(stop),nEvents(0),collisions(0)
+    {}
+    ~Simulation(){ event_q.clear(); }
     void Run();
     void Stop();
     void PrintData();
-    void ScheduleEvent(Event *event);
-    //void TerminateEvent(Event *event);
-    
-    void SetStartTime(sim_time newTime);
-    void SetStopTime(sim_time newTime);
-    sim_time GetTime();
-    sim_time GetNextEventTime();
-    uint64_t queuedEvents();
+    void ScheduleEvent(Event *event){ event->time += curTime; event_q.insert(event); }
+    void SetStartTime(sim_time newTime){startTime = newTime;}
+    void SetStopTime(sim_time newTime){stopTime = newTime;}
+    sim_time GetTime()          const {return curTime;}
+    sim_time GetNextEventTime() const {return (event_q.top())->time;}
+    uint64_t queuedEvents()     const { return event_q.size(); }
     
 };
 

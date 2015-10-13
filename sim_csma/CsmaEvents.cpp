@@ -9,13 +9,7 @@
 
 #include "CsmaEvents.h"
 
-/*  DIFS  */
-
-DIFS::DIFS(TxNode *sNode, sim_time execTime,sim_time duration,sim_time slotDur,bool shouldPause):
-Event(execTime,VERY_LOW),timeLeft(duration),slotDuration(slotDur),m_shouldPause(shouldPause)
-{
-    sendingNode = sNode;
-}
+///////////////////////*  DIFS  *////////////////////////
 
 void DIFS::execute()
 {
@@ -29,178 +23,119 @@ void DIFS::execute()
     sendingNode->scheduleDifs(this);
 }
 
-bool DIFS::isComplete()
+
+////////////////////////*  PACKET READY EVENT  *////////////////////////
+
+void PacketReady::execute()
 {
-    return timeLeft <= 0;
-}
-
-
-/*  PACKET READY EVENT  */
-
-PacketReady::PacketReady(TxNode *sNode,RxNode *rnode,sim_time newTime,sim_time newDifs, sim_time slotDur,bool isretry):
-Event(newTime,VERY_LOW),difs(newDifs),slotDuration(slotDur),isRetry(isretry)
-{
-    sendingNode = sNode;
-    rxNode = rnode;
-}
-
-void PacketReady::execute(){
         sendingNode->scheduleDifs(new DIFS(sendingNode,0,difs,slotDuration,false));
 #ifdef VERBOSE
         std::cout << time << "," << sendingNode->id() << ",PacketReady" <<  endl;
 #endif
 }
 
-void PacketReady::scheduleBackoff()
-{
-    sim_time backoff = sendingNode->getBackoff(0);
-    sendingNode->scheduleDifs(new DIFS(sendingNode,backoff,difs,slotDuration,true));
-}
-
-/*  RTS EVENT  */
-RTS::RTS(TxNode *sNode,RxNode *rnode, sim_time newTime, sim_time sendDuration):
-Send(sNode,rnode,newTime,sendDuration)
-{
-    
-}
+////////////////////////*  RTS EVENT  *////////////////////////
 
 void RTS::execute()
 {
-    if (sendingNode->channel()->isIdle){
-        sendingNode->RtsSuccess();
-        sendingNode->channel()->isIdle = false;
-        sendingNode->channel()->owner = sendingNode->id();        sendingNode->channel()->lastRTSTime = sendingNode->getSimTime();
-#ifdef VERBOSE
-        std::cout << time << "," << sendingNode->id() << ",RTS" <<  endl;
-#endif
-    } else {
-        sendingNode->handleBusy(this);
-#ifdef VERBOSE
-        std::cout << time << "," << sendingNode->id() <<  ",AbortRTS_ChanBusy,owner:"<<sendingNode->channel()->owner << endl;
-#endif
+    string action("RTS");
+    if (sendingNode->channel()->isIdle)
+        sendingNode->executeRts();
+    else {
+        sendingNode->handleBusy();
+        action = "AbortRTS_ChanBusy";
     }
+#ifdef VERBOSE
+    std::cout << time << "," << sendingNode->id() <<  "," << action << endl;
+#endif
 }
 
-void RTS::executeDuplicate(){
+void RTS::executeDuplicate()
+{
     if (sendingNode->channel()->isIdle)
         sendingNode->handleCollision();
     else
-        sendingNode->handleBusy(this);
+        sendingNode->handleBusy();
 }
 
-
-/*  CTS EVENT  */
-CTS::CTS(TxNode *sNode, RxNode *rnode, sim_time newTime, sim_time sendDuration):
-Send(sNode,rnode,newTime,sendDuration)
-{
-    
-}
+////////////////////////*  CTS EVENT  *////////////////////////
 
 void CTS::execute()
 {
-    if (! sendingNode->channel()->isIdle && sendingNode->channel()->owner ==sendingNode->id() ){		sendingNode->channel()->lastCTSTime = sendingNode->getSimTime();
+    string action("CTS");
+    if (! sendingNode->channel()->isIdle && sendingNode->channel()->owner ==sendingNode->id() )
+    {
+        sendingNode->channel()->lastCTSTime = sendingNode->getSimTime();
         sendingNode->schedulePacketSend(duration);
-#ifdef VERBOSE
-        std::cout << time << "," << sendingNode->id() << ",CTS" <<  endl;
-#endif
-    } else {
-#ifdef VERBOSE
-        std::cout << time << "," << sendingNode->id() <<  ",AbortCTS_ChanNotIdle or not owned by sender"<< endl;
-#endif
-    }
-}
-
-
-/*  ACK EVENT */
-Ack::Ack(TxNode *sNode, RxNode *rnode, sim_time newTime, sim_time sendDuration):
-Send(sNode,rnode,newTime,sendDuration)
-{
+    } else
+        action = "AbortCTS_ChanNotIdle or not owned by sender";
     
-}
-
-void Ack::execute()
-{
-    if ( ! sendingNode->channel()->isIdle && sendingNode->channel()->owner == sendingNode->id() ){
-		sendingNode->scheduleChannelFree(duration);
-        sendingNode->schedulePacketReady(duration + random_distro::exponential(sendingNode->SendFreq(),random_distro::TEN_USECS));
 #ifdef VERBOSE
-        std::cout << time << "," << sendingNode->id() << ",ACK" <<  endl;
+    std::cout << time << "," << sendingNode->id() <<  "," << action << endl;
 #endif
-    } else {
-#ifdef VERBOSE
-        std::cout << time << "," << sendingNode->id() <<  ",AbortAck_ChanNotIdle or not owned by sender"<< endl;
-#endif
-    }
 }
 
-
-
-/*  PACKET SEND EVENT  */
-PacketSend::PacketSend( TxNode *sNode, RxNode *rNode, sim_time newTime, sim_time sendDuration):
-Send(sNode,rNode,newTime,sendDuration)
-{
-    
-}
-                                  
-/*  SEND EVENT  */
-
-Send::Send(TxNode *sNode, RxNode *rnode,sim_time newTime,sim_time sendDuration):
-    Event(newTime,VERY_LOW,true),duration(sendDuration)
-{
-    sendingNode = sNode;
-    receivingNode = rnode;
-}
-
+////////////////////////*  SEND EVENT  *////////////////////////
 
 void Send::execute()
 {
-    if (sendingNode->channel()->isIdle || sendingNode->channel()->owner == sendingNode->id()){
-        sendingNode->sendSuccess();
-        sendingNode->channel()->isIdle = false;
-        sendingNode->channel()->owner = sendingNode->id();
-#ifdef VERBOSE
-        std::cout << time << "," << sendingNode->id() << ",Send" <<  endl;
-#endif
-    } else {
-        sendingNode->handleBusy(this);
-#ifdef VERBOSE
-        std::cout << time << "," << sendingNode->id() <<  ",AbortSend_ChanBusy"<< endl;
-#endif
+    string action("Send");
+    if (sendingNode->channel()->isIdle || sendingNode->channel()->owner == sendingNode->id() )
+        sendingNode->executeSend();
+    else {
+        sendingNode->handleBusy();
+        action = "AbortSend_ChanBusy";
     }
+    
+#ifdef VERBOSE
+    std::cout << time << "," << sendingNode->id() << "," << action << endl;
+#endif
+    
 }
 
-void Send::executeDuplicate(){
-	sendingNode->handleCollision();
-}
-
-EndSend::EndSend(TxNode *sNode,sim_time newTime):
-    Event(newTime,VERY_LOW)
+void Send::executeDuplicate()
 {
-    sendingNode = sNode;
+    sendingNode->handleCollision();
 }
 
+////////////////////////*  END SEND EVENT  *////////////////////////
 
-void EndSend::execute(){
-	sendingNode->endTransmit();
-   // sendingNode->channel()->isIdle = true;
+void EndSend::execute()
+{
+    sendingNode->endTransmit();
+    
 #ifdef VERBOSE
     std::cout << time << "," << sendingNode->id() << ",End" <<  endl;
 #endif
 }
 
-FreeChannel::FreeChannel( Channel *c,Simulation *nSim, sim_time newTime):
-    Event(newTime,VERY_LOW)
+////////////////////////*  ACK EVENT *////////////////////////
+
+void Ack::execute()
 {
-	channel =c;
-	sim = nSim;
+    string action("ACK");
+    if ( ! sendingNode->channel()->isIdle && sendingNode->channel()->owner == sendingNode->id() )
+    {
+		sendingNode->scheduleChannelFree(duration);
+        sendingNode->schedulePacketReady(duration + random_distro::exponential(sendingNode->SendFreq(),random_distro::TEN_USECS));
+    } else
+        action = "AbortAck_ChanNotIdle or not owned by sender";
+    
+    
+#ifdef VERBOSE
+    std::cout << time << "," << sendingNode->id() <<  "," << action << endl;
+#endif
+
 }
 
+////////////////////////*  FREE CHANNEL EVENT  *////////////////////////
 
-void FreeChannel::execute(){
-#ifdef VERBOSE
-	cout <<sim->GetTime()<< ",Channel freed" << endl;
-#endif
+void FreeChannel::execute()
+{
 	channel->isIdle = true;
 	channel->owner = 999;
+#ifdef VERBOSE
+    cout <<sim->GetTime()<< ",Channel freed" << endl;
+#endif
 }
 

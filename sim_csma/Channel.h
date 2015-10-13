@@ -15,10 +15,11 @@
 
 struct Channel {
     bool isIdle;
+    bool hiddenNodeTransmitting;
     uint16_t owner;
     sim_time lastRTSTime;
 	sim_time lastCTSTime;
-    Channel():isIdle(true){}
+    Channel():isIdle(true),hiddenNodeTransmitting(false){}
 };
 
 #endif /* defined(__sim_csma__Channel__) */

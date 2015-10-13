@@ -27,12 +27,14 @@ enum Priority {
 class Event
 {
 protected :
-    Event(sim_time newTime = 0, Priority qpri=VERY_LOW,bool attemptedSend = false);  // queuing pri
+    Event(sim_time newTime = 0, Priority qpri=VERY_LOW,bool attemptedSend = false):
+    isSendAttempt(attemptedSend),priority(qpri),time(newTime){}
     
 public :
-    virtual ~Event();                   // destructor.
+    virtual ~Event(){};                   // destructor.
     
-    virtual void SetTime(sim_time newTime);
+    virtual void SetTime(sim_time newTime){time = newTime;}
+
     virtual void execute() = 0;
 	virtual void executeDuplicate(){execute();}       //special execute to call when events scheduled at same time and priority.
 	                                                  //if not overridden calls execute
