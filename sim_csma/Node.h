@@ -56,7 +56,6 @@ public:
 	uint32_t SendFreq() const{return sendFreq;}
 };
 
-class TxNode ;
 
 /* RX NODE */
 
@@ -90,7 +89,11 @@ public:
     { rxNode = rNode; }
     
     void executeSend();
-    void executeRts();    void handleCollision();
+    void executeRts();  
+    bool executeCts();   
+    void executeAck();     
+    void executeChannelFree();   
+	void handleCollision();
     void handleBusy();
     void endTransmit();
     void schedulePacketSend(sim_time sendTime);

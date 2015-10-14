@@ -34,10 +34,11 @@ public:
     void PrintData();
     void ScheduleEvent(Event *event){ event->time += curTime; event_q.insert(event); }
     void SetStartTime(sim_time newTime){startTime = newTime;}
-    void SetStopTime(sim_time newTime){stopTime = newTime;}
-    sim_time GetTime()          const {return curTime;}
-    sim_time GetNextEventTime() const {return (event_q.top())->time;}
+    void SetStopTime(sim_time newTime) { stopTime = newTime;}
+    sim_time GetTime()          const { return curTime;}
+    sim_time GetNextEventTime() const { return (event_q.top())->time;}
     uint64_t queuedEvents()     const { return event_q.size(); }
+	void clearQueue()                 { event_q.clear(); }
     
 };
 

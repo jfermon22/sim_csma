@@ -13,13 +13,19 @@
 #include <stdint.h>
 #include "Event.h"
 
+class TxNode;
+
 struct Channel {
     bool isIdle;
-    bool hiddenNodeTransmitting;
+    TxNode *hiddenTransmittingNode;
     uint16_t owner;
     sim_time lastRTSTime;
 	sim_time lastCTSTime;
-    Channel():isIdle(true),hiddenNodeTransmitting(false){}
+    Channel():
+		isIdle(true),owner(999),lastRTSTime(0),lastCTSTime(0)
+	{
+		hiddenTransmittingNode = NULL;
+	}
 };
 
 #endif /* defined(__sim_csma__Channel__) */

@@ -1,3 +1,6 @@
 sim_csma.xcodeproj/
 .obj/
+.deps/
 sim_csma/sim_csma
+*.tar
+*.csv
