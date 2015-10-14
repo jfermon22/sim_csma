@@ -17,12 +17,14 @@ class FreeChannel : public Event
 {
     Channel *channel;
     Simulation *sim;
+	TxNode *node;
 public:
-    FreeChannel( Channel *c, Simulation *nSim, sim_time newTime = 0.0f):
+    FreeChannel( TxNode *tnode,Channel *c, Simulation *nSim, sim_time newTime = 0.0f):
     Event(newTime,VERY_LOW)
     {
         channel =c;
         sim = nSim;
+		node = tnode;
     }
     ~FreeChannel(){};
     void execute();
@@ -53,7 +55,7 @@ class PacketReady : public Event
     sim_time difs;
     sim_time slotDuration;
 public:
-    PacketReady(TxNode *sNode,RxNode *rnode,sim_time execTime,sim_time difsTime, sim_time slotDur, bool isretry = false):
+    PacketReady(TxNode *sNode,RxNode *rnode,sim_time execTime,sim_time difsTime, sim_time slotDur):
     Event(execTime,VERY_LOW),difs(difsTime),slotDuration(slotDur)
     {
         sendingNode = sNode;
@@ -113,7 +115,7 @@ public:
     {}
     ~CTS(){};
     void execute();
-    void executeDuplicate(){ execute();}
+    void executeDuplicate();
 };
 
 
@@ -136,6 +138,21 @@ public:
     Event(newTime,VERY_LOW)
     { sendingNode = sNode; }
     ~EndSend(){};
+    void execute();
+};
+
+class Collision : public Event
+{
+	TxNode *txNode1;
+    TxNode *txNode2;
+public:
+    Collision(TxNode *sNode1, TxNode *sNode2, sim_time newTime = 0.0f):
+		Event(newTime,VERY_LOW)
+    {
+        txNode1 = sNode1;
+        txNode2 = sNode2;
+    }
+    Collision(){};
     void execute();
 };
 
