@@ -25,7 +25,7 @@ int random_distro::seed(){
 #ifdef GCC_4_2
 	static bool firstPass = true;
 	if (firstPass) {
-		srand(time(NULL));
+		srand((uint)time(NULL));
 		firstPass= false;
 	}
 	return 0;
