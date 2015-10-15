@@ -25,7 +25,7 @@ all :   $(EXECS)
 	
 clean :
 	@echo Deleting all targets
-	@rm -rf $(EXECS)
+	@rm -r $(EXECS) *.csv
 	@rm -rf $(OBJ_DIR) $(DEP_DIR) $(LIB_DIR)
 	
 
