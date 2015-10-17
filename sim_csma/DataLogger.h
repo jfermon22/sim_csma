@@ -20,21 +20,21 @@ struct Data {
     uint32_t index;
     uint32_t freq_a;
     uint32_t freq_c;
-    uint32_t thruput_a;
-    uint32_t thruput_c;
+    float thruput_a;
+    float thruput_c;
     float util_a;
     float util_c;
-    uint32_t colls;
+    float colls;
     uint32_t isHidden;
     uint32_t useVcs;
-    uint32_t thruput_tot;
+    float thruput_tot;
     float util_tot;
     float fairness;
     
-    Data(uint32_t idx, uint32_t fa, uint32_t fc,
-         uint32_t thrua, uint32_t thruc,
-         float utila, float utilc, uint32_t cols,
-         uint32_t hide, uint32_t vcs, uint32_t thrutot,
+    Data(uint32_t idx, float fa, float fc,
+         float thrua, float thruc,
+         float utila, float utilc, float cols,
+         uint32_t hide, uint32_t vcs, float thrutot,
          float utiltot, float fair ):
     index(idx),freq_a(fa),freq_c(fc),thruput_a(thrua),
     thruput_c(thruc),util_a(utila),util_c(utilc),

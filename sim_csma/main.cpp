@@ -206,13 +206,34 @@ int main(int argc, const char * argv[]) {
         cout << "Row 4: Hidden Node, VCS" << endl;
         
         
+        cout << endl<<"Throughput A:" << endl;
+        
+        for (  map<uint32_t, Data*>::iterator it2 = dataMap.begin();
+             it2 != dataMap.end(); ++it2 )
+        {
+            cout << left << setw(2) <<it2->first << ":"
+            <<setw(10) << std::setprecision( 3 ) << fixed <<it2->second->thruput_a << "\t";
+            if (it2->first && it2->first % 12 == 0)
+                cout << endl;
+        }
+        cout << endl<<"Throughput C:" << endl;
+        
+        for (  map<uint32_t, Data*>::iterator it2 = dataMap.begin();
+             it2 != dataMap.end(); ++it2 )
+        {
+            cout << left << setw(2) <<it2->first << ":"
+            <<setw(10) << std::setprecision( 3 ) << fixed << it2->second->thruput_c << "\t";
+            if (it2->first && it2->first % 12 == 0)
+                cout << endl;
+        }
+        
         cout << endl<<"Throughput:" << endl;
         
         for (  map<uint32_t, Data*>::iterator it2 = dataMap.begin();
              it2 != dataMap.end(); ++it2 )
         {
             cout << left << setw(2) <<it2->first << ":"
-            <<setw(5) << std::setprecision( 3 ) << it2->second->thruput_tot << "\t";
+            <<setw(10) << std::setprecision( 3 ) << fixed <<it2->second->thruput_tot << "\t";
             if (it2->first && it2->first % 12 == 0)
                 cout << endl;
         }
@@ -222,7 +243,7 @@ int main(int argc, const char * argv[]) {
              it2 != dataMap.end(); ++it2 )
         {
             cout << left << setw(2) <<it2->first << ":"
-            <<setw(5) << std::setprecision( 3 ) << it2->second->util_tot << "\t";
+            <<setw(5) << std::setprecision( 3 ) <<fixed<< it2->second->util_tot << "\t";
             if (it2->first && it2->first % 12 == 0)
                 cout << endl;
         }
@@ -232,7 +253,7 @@ int main(int argc, const char * argv[]) {
              it2 != dataMap.end(); ++it2 )
         {
                 cout << left << setw(2) <<it2->first << ":"
-                <<setw(5) << std::setprecision( 3 ) << it2->second->fairness<< "\t";
+                <<setw(5) << std::setprecision( 3 ) <<fixed<< it2->second->fairness<< "\t";
                 if (it2->first && it2->first % 12 == 0)
                     cout << endl;
         }
@@ -242,65 +263,11 @@ int main(int argc, const char * argv[]) {
              it2 != dataMap.end(); ++it2 )
         {
             cout << left << setw(2) <<it2->first << ":"
-            <<setw(5) << std::setprecision( 3 ) << it2->second->colls<< "\t";
+            <<setw(10) << std::setprecision( 3 ) <<fixed<< it2->second->colls << "\t";
             if (it2->first && it2->first % 12 == 0)
                 cout << endl;
         }
         
-        /*cout << endl<<"Collisions:" << endl;
-        for ( map<uint32_t, Data*>::iterator it2 = dataMap.begin();
-             it2 != dataMap.end(); ++it2 )
-        {
-            cout << left << setw(2) <<it2->first << ":"
-            <<setw(5) << std::setprecision( 3 ) << it2->second->colls<< "\t";
-            if (it2->first && it2->first % 12 == 0)
-                cout << endl;
-        }
-        
-         cout << endl<<"Throughput:" << endl;
-        for ( map <uint,uint32_t>::iterator it2 = thruputMap.begin();
-             it2 != thruputMap.end(); ++it2 )
-        {
-            cout << left << setw(2) <<it2->first << ":"
-            <<setw(5) << std::setprecision( 3 ) << it2->second<< "\t";
-            if (it2->first && it2->first % 12 == 0)
-                cout << endl;
-        }
-        
-        cout <<endl<< "Utilization:" << endl;
-        for ( map <uint,float>::iterator it2 = utilizationMap.begin();
-             it2 != utilizationMap.end(); ++it2 )
-        {
-            cout << left << setw(2) <<it2->first << ":"
-            <<setw(5) << std::setprecision( 3 ) << it2->second << "\t";
-            if (it2->first && it2->first % 12 == 0)
-                cout << endl;
-        }
-        
-        cout <<endl<< "Fairness Indeces:" << endl;
-        for ( map <uint,float>::iterator it2 = fairnessIndexMap.begin();
-             it2 != fairnessIndexMap.end(); ++it2 )
-        {
-            if ( ! isnormal( it2->second ) )
-                cout <<"\nERROR:"<<  it2->first << ":" << it2->second<<endl;
-            else{
-                cout << left << setw(2) <<it2->first << ":" 
-                <<setw(5) << std::setprecision( 3 ) << it2->second<< "\t";
-                if (it2->first && it2->first % 12 == 0)
-                    cout << endl;
-            }
-        }
-        
-        cout << endl<<"Collisions:" << endl;
-        for ( map <uint,uint32_t>::iterator it2 = collisionsIndexMap.begin();
-             it2 != collisionsIndexMap.end(); ++it2 )
-        {
-            cout << left << setw(2) <<it2->first << ":" 
-            <<setw(5) << std::setprecision( 3 ) << it2->second << "\t";
-            if (it2->first && it2->first % 12 == 0)
-                cout << endl;
-        }
-        */
     }
     return 0;
 }
