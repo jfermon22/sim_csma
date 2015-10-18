@@ -61,13 +61,6 @@ int main(int argc, const char * argv[]) {
     msgFreqVec.push_back(400);
     msgFreqVec.push_back(500);
     
-    
-    /*cout << "------------------------------------------------------------" << endl;
-     cout << " KEY"<< endl;
-     cout << "Sim Num,Node,Attribute,Value"<< endl;
-     cout << "Node: 0 = A, 1 = C, 2 = Total"<< endl;
-     cout << "------------------------------------------------------------" << endl;*/
-    
     map <uint,float> fairnessIndexMap;
     map <uint,uint32_t> collisionsIndexMap;
     map <uint,float> utilizationMap;
@@ -77,7 +70,8 @@ int main(int argc, const char * argv[]) {
     for (uint32_t testNum =1; testNum < g_uSimNum; testNum++)
     {
         uint jjj(1);
-        cout << "Test: " << testNum << endl;
+        if(testNum%10 == 0)
+            cout << "Test: " << testNum << endl;
         for (uint hiddenNode = 0; hiddenNode <= 1; hiddenNode++ )
         {
             for (uint useVcs = 0; useVcs <= 1; useVcs++ )
@@ -137,38 +131,6 @@ int main(int argc, const char * argv[]) {
                         }
                         
                         
-                        
-                        /*
-                         printf("%u,%u,%s,%u\n",jjj,nodeA->id(),"Lambda",nodeAFreq);
-                         printf("%u,%u,%s,%u\n",jjj,nodeA->id(),"Throughput",aThruput);
-                         printf("%u,%u,%s,%.2f\n",jjj,nodeA->id(),"Utilization",aUtil);
-                         printf("%u,%u,%s,%u\n",jjj,nodeC->id(),"Lambda",nodeCFreq);
-                         printf("%u,%u,%s,%u\n",jjj,nodeC->id(),"Throughput",cThruput);
-                         printf("%u,%u,%s,%.2f\n",jjj,nodeC->id(),"Utilization",cUtil);
-                         printf("%u,%u,%s,%u\n",jjj,2,"Collisions",nodeC->TotalCollisions());
-                         printf("%u,%u,%s,%u\n",jjj,2,"HiddenNode",nodeC->IsHiddenNode());
-                         printf("%u,%u,%s,%u\n",jjj,2,"VCS",nodeC->UsesVCS());
-                         printf("%u,%u,%s,%u\n",jjj,2,"Throughput",aThruput + cThruput);
-                         printf("%u,%u,%s,%.2f\n",jjj,2,"Utilization",aUtil + cUtil);
-                         printf("%u,%u,%s,%.2f\n",jjj,2,"Fairnessindex",aUtil/cUtil);
-                         if ( ! isnormal( aUtil/cUtil ) || 5 > (aUtil + cUtil) )
-                         {
-                         cout <<"BREAK"<<endl;
-                         if (! isnormal( aUtil/cUtil ))
-                         cout <<"not normal"<<endl;
-                         else
-                         cout <<"Utilization under 5"<<endl;
-                         hiddenNode = 999;
-                         useVcs = 999;
-                         break;
-                         }
-                         //cout << endl;
-                         */
-                         //fairnessIndexMap.insert(std::pair<uint32_t, float>(jjj,aUtil/cUtil));
-                         //collisionsIndexMap.insert(std::pair<uint32_t, uint32_t>(jjj,nodeC->TotalCollisions()));
-                         //thruputMap.insert(std::pair<uint32_t, uint32_t>(jjj,aThruput + cThruput));
-                         //utilizationMap.insert(std::pair<uint32_t, float>(jjj,aUtil+cUtil));
-                         
                         dataMap.insert(Data(jjj, nodeAFreq, nodeCFreq, aThruput, cThruput, aUtil, cUtil, nodeC->TotalCollisions(), nodeC->IsHiddenNode(), nodeC->UsesVCS(), aThruput + cThruput, aUtil + cUtil, aUtil/cUtil));
                         
                         
